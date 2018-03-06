@@ -1,9 +1,9 @@
 import tkinter as tk
-import MonthFrame as calComp
+import MonthFrame
 
 
 root = tk.Tk(className="FrameTesting")
 
-calFrame = calComp.MonthFrame(root)
+calFrame = MonthFrame.MonthFrame(root)
 
 root.mainloop()
