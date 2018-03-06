@@ -14,16 +14,16 @@ class MonthFrame(tk.Frame):
         self.monthDict = {1: "January", 2: "February", 3: "March", 4: "April",
                           5: "May", 6: "June", 7: "July", 8: "August",
                           9: "September", 10: "October", 11: "November", 12: "December"}
-        self.weekDict = {0: "Monday", 1: "Tuesday", 2: "Wednesday", 3: "Thursday",
-                         4: "Friday", 5: "Saturday", 6: "Sunday"}
-        self.calendar = cal.Calendar()
+        self.weekDict = {0: "Sunday", 1: "Monday", 2: "Tuesday", 3: "Wednesday",
+                         4: "Thursday", 5: "Friday", 6: "Saturday"}
+        self.calendar = cal.Calendar(firstweekday=6)
         # setting the font
         self.font = Font(size=10)
         # initialize fields
         self.days = []
         self.currentDay = 1
         self.currentMonth = 1
-        self.currentYear = 2017
+        self.currentYear = 2018
         self.showingDay = self.currentDay
         self.showingMonth = self.currentMonth
         self.showingYear = self.currentYear
@@ -32,6 +32,8 @@ class MonthFrame(tk.Frame):
         self.weekTitle = []
         self.create_content()
 
+    # A working attempt to fill the 2D list of labels with correct dates
+    # Require a little bit more re-work
     def show_date(self):
         showing_calendar = self.calendar.monthdays2calendar(self.showingYear, self.showingMonth)
         for week in range(len(self.showingCalendar)):
@@ -50,32 +52,34 @@ class MonthFrame(tk.Frame):
         else:
             prev_month_calendar = self.calendar.monthdays2calendar(self.showingYear, self.showingMonth-1)
             next_month_calendar = self.calendar.monthdays2calendar(self.showingYear, self.showingMonth+1)
+        print(next_month_calendar)
         for week in range(6):
             for day in range(7):
-                start_five = True
-                if self.days[week][day]["text"] == 31 and day != 6:
-                    start_five = False
-                elif self.days[week][day]["text"] == -1:
+                if self.days[week][day]["text"] == -1:
                     self.days[week][day].configure(
                         text=prev_month_calendar[-1][day][0])
                 elif self.days[week][day]["text"] == 0:
                     if week == 4:
                         self.days[week][day].configure(
                             text=next_month_calendar[0][day][0])
+                        empty_row = True
                     elif week == 5:
-                        if start_five:
-                            self.days[week][day].configure(
-                                text=next_month_calendar[0][day][0])
-                        else:
+                        if empty_row:
                             self.days[week][day].configure(
                                 text=next_month_calendar[1][day][0])
+                        else:
+                            self.days[week][day].configure(
+                                text=next_month_calendar[0][day][0])
 
+    # Solution for assigning font to all label creations
     def create_tk_label(self, **kwargs):
         return tk.Label(font=self.font, **kwargs)
 
+    # solution for assigning padding for all widget
     def grid_widget(self, widget, **kwargs):
         widget.grid(pady=2, padx=10, **kwargs)
 
+    # change and add all the widget, call in __init__()
     def create_content(self):
         # title
         self.monthTitle.grid(row=0, columnspan=7)
