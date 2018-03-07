@@ -15,6 +15,7 @@ class MonthFrame(tk.Frame):
 
     def __init__(self, master=None):
         super().__init__(master)
+        self.config(bg="blue")
         self.grid()
         self.calendar = cal.Calendar(firstweekday=6)
         # setting the font
@@ -67,17 +68,18 @@ class MonthFrame(tk.Frame):
     def place_content(self):
         # Placing title Label
         self.monthTitle.config(text=self.monthDict[self.showingMonth]+" "+str(self.showingYear),
-                               font=self.font)
+                               font=self.font, bg="white")
+        self.monthTitle.config(font=Font(weight="bold"))
         self.monthTitle.grid(row=0, columnspan=7)
         # Placing week title Label
         for week in range(7):
-            self.weekTitle.append(tk.Label(text=self.weekDict[week][0:2], font=self.font))
+            self.weekTitle.append(tk.Label(text=self.weekDict[week][0:2], font=self.font, bg="white"))
             self.weekTitle[week].grid(column=week, row=1, pady=2, padx=10)
         # Placing days Label
         for week in range(6):
             self.days.append([])
             for day in range(7):
-                self.days[week].append(tk.Label(font=self.font))
+                self.days[week].append(tk.Label(font=self.font, bg="white"))
                 self.days[week][day].grid(column=day, row=week+2)
         self.update_date()
 
