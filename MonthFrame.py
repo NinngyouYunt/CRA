@@ -7,15 +7,17 @@ class MonthFrame(tk.Frame):
     # each month is a 6 by 7 matrix (without week and header)
     # each year could be in 4 by 3 or 3 by 4
 
+    monthDict = {1: "January", 2: "February", 3: "March", 4: "April",
+                      5: "May", 6: "June", 7: "July", 8: "August",
+                      9: "September", 10: "October", 11: "November", 12: "December"}
+    weekDict = {0: "Sunday", 1: "Monday", 2: "Tuesday", 3: "Wednesday",
+                     4: "Thursday", 5: "Friday", 6: "Saturday"}
+
     def __init__(self, master=None):
         super().__init__(master)
         self.grid()
         # define dict for month
-        self.monthDict = {1: "January", 2: "February", 3: "March", 4: "April",
-                          5: "May", 6: "June", 7: "July", 8: "August",
-                          9: "September", 10: "October", 11: "November", 12: "December"}
-        self.weekDict = {0: "Sunday", 1: "Monday", 2: "Tuesday", 3: "Wednesday",
-                         4: "Thursday", 5: "Friday", 6: "Saturday"}
+
         self.calendar = cal.Calendar(firstweekday=6)
         # setting the font
         self.font = Font(size=10)
@@ -66,10 +68,10 @@ class MonthFrame(tk.Frame):
                     elif week == 5:
                         if empty_row:
                             self.days[week][day].configure(
-                                text=next_month_calendar[1][day][0])
+                                text=next_month_calendar[2][day][0])
                         else:
                             self.days[week][day].configure(
-                                text=next_month_calendar[0][day][0])
+                                text=next_month_calendar[1][day][0])
 
     # Solution for assigning font to all label creations
     def create_tk_label(self, **kwargs):
