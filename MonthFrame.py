@@ -13,8 +13,9 @@ class MonthFrame(tk.Frame):
     weekDict = {0: "Sunday", 1: "Monday", 2: "Tuesday", 3: "Wednesday",
                 4: "Thursday", 5: "Friday", 6: "Saturday"}
 
-    def __init__(self, master=None):
+    def __init__(self, master=None, isSimpleMode=False):
         super().__init__(master)
+        self.isSimpleMode = isSimpleMode
         self.config(bg="blue")
         self.grid()
         self.calendar = cal.Calendar(firstweekday=6)
@@ -37,6 +38,8 @@ class MonthFrame(tk.Frame):
     def update_date(self):
         # Getting all the dates from Calendar module
         current_month = self.calendar.monthdays2calendar(self.showingYear, self.showingMonth)
+        prev_month = None
+        next_month = None
         if 1 < self.showingMonth < 12:
             prev_month = self.calendar.monthdays2calendar(self.showingYear, self.showingMonth - 1)
             next_month = self.calendar.monthdays2calendar(self.showingYear, self.showingMonth + 1)
@@ -55,20 +58,28 @@ class MonthFrame(tk.Frame):
                         self.days[week][day].config(text=current_month[week][day][0])
                         self.days[week][day].config(font=Font(weight="bold"))
                     elif current_month[week][day][0] == 0:
-                        if week < 1:
-                            self.days[week][day].config(text=prev_month[-1][day][0])
+                        if self.isSimpleMode is not True:
+                            if week < 1:
+                                self.days[week][day].config(text=prev_month[-1][day][0])
+                            else:
+                                self.days[week][day].config(text=next_month[starting][day][0])
+                                if day == 6:
+                                    starting += 1
                         else:
-                            self.days[week][day].config(text=next_month[starting][day][0])
-                            if day == 6:
-                                starting += 1
+                            self.days[week][day].config(text="")
                 else:
-                    self.days[week][day].config(text=next_month[starting][day][0])
+                    if self.isSimpleMode is not True:
+                        self.days[week][day].config(text=next_month[starting][day][0])
+                    else:
+                        self.days[week][day].config(text="")
 
     # Add widgets into the frame, call in __init__()
     def place_content(self):
         # Placing title Label
         self.monthTitle.config(text=self.monthDict[self.showingMonth]+" "+str(self.showingYear),
                                font=self.font, bg="white")
+        if self.isSimpleMode:
+            self.monthTitle.config(text=self.monthDict[self.showingMonth])
         self.monthTitle.config(font=Font(weight="bold"))
         self.monthTitle.grid(row=0, columnspan=7)
         # Placing week title Label
@@ -87,3 +98,12 @@ class MonthFrame(tk.Frame):
         self.showingYear = year
         self.showingMonth = month
         self.update_date()
+
+    def change_mode(self, mode):
+        if type(mode) is str:
+            if mode[0] == 's':
+                self.isSimpleMode = True
+            elif mode[0] == 'c':
+                self.isSimpleMode = False
+        else:
+            self.isSimpleMode = mode
