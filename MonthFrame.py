@@ -13,19 +13,17 @@ class MonthFrame(tk.Frame):
     weekDict = {0: "Sunday", 1: "Monday", 2: "Tuesday", 3: "Wednesday",
                 4: "Thursday", 5: "Friday", 6: "Saturday"}
 
-    def __init__(self, master=None, isSimpleMode=False):
-        super().__init__(master)
-        self.isSimpleMode = isSimpleMode
-        self.config(bg="blue")
-        self.grid()
+    def __init__(self, day, month, year, master=None, simple=False):
+        super().__init__(master, width=1000)
+        self.isSimpleMode = simple
         self.calendar = cal.Calendar(firstweekday=6)
         # setting the font
         self.font = Font(size=10)
         # initialize fields
         self.days = []
-        self.currentDay = 1
-        self.currentMonth = 1
-        self.currentYear = 2017
+        self.currentDay = day
+        self.currentMonth = month
+        self.currentYear = year
         self.showingDay = self.currentDay
         self.showingMonth = self.currentMonth
         self.showingYear = self.currentYear

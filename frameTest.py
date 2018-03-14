@@ -1,9 +1,10 @@
 import tkinter as tk
 import MonthFrame
+import CalendarFrame
 
 
 root = tk.Tk(className="FrameTesting")
 root.config(bg="white")
-calFrame = MonthFrame.MonthFrame(root, True)
+cf = CalendarFrame.CalendarFrame(root)
 
 root.mainloop()
