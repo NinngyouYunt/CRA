@@ -1,9 +1,10 @@
 import tkinter as tk
 from tkinter.font import Font
 import calendar as cal
+import CalendarTemplate
 
 
-class MonthFrame(tk.Frame):
+class MonthFrame(CalendarTemplate.Template):
     # each month is a 6 by 7 matrix (without week and header)
     # each year could be in 4 by 3 or 3 by 4
 
@@ -14,28 +15,22 @@ class MonthFrame(tk.Frame):
                 4: "Thursday", 5: "Friday", 6: "Saturday"}
 
     def __init__(self, day, month, year, master=None, simple=False):
-        super().__init__(master, bg="white")
+        super().__init__(day, month, year, master, bg="white")
         self.isSimpleMode = simple
         self.calendar = cal.Calendar(firstweekday=6)
         # setting the font
         self.font = Font(size=10)
         # initialize fields
         self.days = []
-        self.currentDay = day
-        self.currentMonth = month
-        self.currentYear = year
-        self.showingDay = self.currentDay
-        self.showingMonth = self.currentMonth
-        self.showingYear = self.currentYear
         self.monthTitle = tk.Label(master=self)
         self.weekTitle = []
         self.place_content()
 
     # Filling self.days with the actually date
     # Will be called to update the date if month changes
-    def update_date(self):
+    def update_graphics(self):
         # Getting all the dates from Calendar module
-        current_month = self.calendar.monthdays2calendar(self.showingYear, self.showingMonth)
+        current_month_calendar = self.calendar.monthdays2calendar(self.showingYear, self.showingMonth)
         prev_month = None
         next_month = None
         if 1 < self.showingMonth < 12:
@@ -51,11 +46,13 @@ class MonthFrame(tk.Frame):
         starting = 0
         for week in range(6):
             for day in range(7):
-                if len(current_month) > week:
-                    if current_month[week][day][0] != 0:
-                        self.days[week][day].config(text=current_month[week][day][0])
+                if len(current_month_calendar) > week:
+                    if current_month_calendar[week][day][0] != 0:
+                        self.days[week][day].config(text=current_month_calendar[week][day][0])
                         self.days[week][day].config(font=Font(weight="bold"))
-                    elif current_month[week][day][0] == 0:
+                        if current_month_calendar[week][day] == self.currentDay:
+                            self.days[week][day].config(bg="red")
+                    elif current_month_calendar[week][day][0] == 0:
                         if self.isSimpleMode is not True:
                             if week < 1:
                                 self.days[week][day].config(text=prev_month[-1][day][0])
@@ -90,12 +87,7 @@ class MonthFrame(tk.Frame):
             for day in range(7):
                 self.days[week].append(tk.Label(master=self,font=self.font, bg="white"))
                 self.days[week][day].grid(row=week+2, column=day)
-        self.update_date()
-
-    def update_calendar(self, month, year):
-        self.showingYear = year
-        self.showingMonth = month
-        self.update_date()
+        self.update_graphics()
 
     def change_mode(self, mode):
         if type(mode) is str:
