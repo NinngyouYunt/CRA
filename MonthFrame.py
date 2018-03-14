@@ -14,7 +14,7 @@ class MonthFrame(tk.Frame):
                 4: "Thursday", 5: "Friday", 6: "Saturday"}
 
     def __init__(self, day, month, year, master=None, simple=False):
-        super().__init__(master, width=1000)
+        super().__init__(master, bg="white")
         self.isSimpleMode = simple
         self.calendar = cal.Calendar(firstweekday=6)
         # setting the font
@@ -27,7 +27,7 @@ class MonthFrame(tk.Frame):
         self.showingDay = self.currentDay
         self.showingMonth = self.currentMonth
         self.showingYear = self.currentYear
-        self.monthTitle = tk.Label()
+        self.monthTitle = tk.Label(master=self)
         self.weekTitle = []
         self.place_content()
 
@@ -79,20 +79,20 @@ class MonthFrame(tk.Frame):
         if self.isSimpleMode:
             self.monthTitle.config(text=self.monthDict[self.showingMonth])
         self.monthTitle.config(font=Font(weight="bold"))
-        self.monthTitle.grid(row=0, columnspan=7)
+        self.monthTitle.grid(row=0, column=0, columnspan=7)
         # Placing week title Label
-        for week in range(7):
-            self.weekTitle.append(tk.Label(text=self.weekDict[week][0:2], font=self.font, bg="white"))
-            self.weekTitle[week].grid(column=week, row=1, pady=2, padx=10)
+        for weekTitle in range(7):
+            self.weekTitle.append(tk.Label(master=self, text=self.weekDict[weekTitle][0:2], font=self.font, bg="white"))
+            self.weekTitle[weekTitle].grid(row=1, column=weekTitle, pady=2, padx=5)
         # Placing days Label
         for week in range(6):
             self.days.append([])
             for day in range(7):
-                self.days[week].append(tk.Label(font=self.font, bg="white"))
-                self.days[week][day].grid(column=day, row=week+2)
+                self.days[week].append(tk.Label(master=self,font=self.font, bg="white"))
+                self.days[week][day].grid(row=week+2, column=day)
         self.update_date()
 
-    def update_calendar(self, year, month):
+    def update_calendar(self, month, year):
         self.showingYear = year
         self.showingMonth = month
         self.update_date()
@@ -105,3 +105,6 @@ class MonthFrame(tk.Frame):
                 self.isSimpleMode = False
         else:
             self.isSimpleMode = mode
+
+    def get_shwoingMonth(self):
+        return self.showingMonth
