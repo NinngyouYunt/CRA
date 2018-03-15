@@ -8,15 +8,9 @@ class MonthFrame(tk.Frame):
     # each month is a 6 by 7 matrix (without week and header)
     # each year could be in 4 by 3 or 3 by 4
 
-    monthDict = {1: "January", 2: "February", 3: "March", 4: "April",
-                 5: "May", 6: "June", 7: "July", 8: "August",
-                 9: "September", 10: "October", 11: "November", 12: "December"}
-    weekDict = {0: "Sunday", 1: "Monday", 2: "Tuesday", 3: "Wednesday",
-                4: "Thursday", 5: "Friday", 6: "Saturday"}
-
-    def __init__(self, master=None):
+    def __init__(self, month, master=None):
         super().__init__(master=master, bg="white")
-        self.showingMonth = Clock.get_instance().currentMonth
+        self.showingMonth = month
         self.showingYear = Clock.get_instance().currentYear
         self.calendar = cal.Calendar(firstweekday=6)
         # setting the font
@@ -30,13 +24,13 @@ class MonthFrame(tk.Frame):
     # Add widgets into the frame, call in __init__()
     def place_content(self):
         # Placing title Label
-        self.monthTitle.config(text=self.monthDict[self.showingMonth],
+        self.monthTitle.config(text=Clock.monthDict[self.showingMonth-1],
                                font=self.font, bg="white")
         self.monthTitle.config(font=Font(weight="bold"))
         self.monthTitle.grid(row=0, column=0, columnspan=7)
         # Placing week title Label
         for weekTitle in range(7):
-            self.weekTitle.append(tk.Label(master=self, text=self.weekDict[weekTitle][0:2], font=self.font, bg="white"))
+            self.weekTitle.append(tk.Label(master=self, text=Clock.weekDict[weekTitle][0:2], font=self.font, bg="white"))
             self.weekTitle[weekTitle].grid(row=1, column=weekTitle, pady=2, padx=5)
         # Placing days Label
         for week in range(6):
@@ -75,6 +69,7 @@ class MonthFrame(tk.Frame):
                                 self.days[week][day]["text"] == Clock.get_instance().currentDay:
                             self.days[week][day].config(fg="blue")
                     elif current_month_calendar[week][day][0] == 0:
+                        self.days[week][day].config(font=Font(weight="normal"))
                         if type(self) is not MonthFrame:
                             if week < 1:
                                 self.days[week][day].config(text=prev_month[-1][day][0])
@@ -85,7 +80,7 @@ class MonthFrame(tk.Frame):
                         else:
                             self.days[week][day].config(text="")
                 else:
-
+                    self.days[week][day].config(font=Font(weight="normal"))
                     if type(self) is not MonthFrame:
                         self.days[week][day].config(text=next_month[starting][day][0])
                     else:
@@ -97,11 +92,5 @@ class MonthFrame(tk.Frame):
         self.showingMonth = month
         self.update_graphics()
 
-    def set_hightlight(self, day, hight_light):
-        for week in self.days:
-            for weekday in week:
-                if weekday["text"] == day:
-                    if hight_light:
-                        weekday.config(fg="blue")
-                    else:
-                        weekday.config(fg="black")
+    def mouse_binding(self, callback):
+        self.monthTitle.bind("<Button-1>", callback)

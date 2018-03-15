@@ -1,6 +1,7 @@
 import tkinter
 import YearFrame, IndependentMonthFrame, Clock
 from tkinter.font import Font
+import MonthFrame
 
 
 class CalendarFrame(tkinter.Frame):
@@ -9,6 +10,7 @@ class CalendarFrame(tkinter.Frame):
         self.clock = Clock.Clock.get_instance()
 
         self.yearCalendar = YearFrame.YearFrame(master=self)
+        self.yearCalendar.mouse_binding(self.choose_month)
         self.monthCalendar = IndependentMonthFrame.IndependentMonthFrame(master=self)
         self.calendarType = "year"
 
@@ -17,7 +19,7 @@ class CalendarFrame(tkinter.Frame):
         self.prev_button = tkinter.Button(text="<-", bg="white", font=Font(weight="bold", size=20),
                                           command=self.prev_function)
         self.switch_button = tkinter.Button(text="Change", bg="white", font=Font(weight="bold", size=20),
-                                          command=self.switch_mode)
+                                            command=self.switch_mode)
 
         self.show_calendar()
         self.place_content()
@@ -41,6 +43,7 @@ class CalendarFrame(tkinter.Frame):
         if self.calendarType == "year":
             self.calendarType = "month"
         else:
+            self.yearCalendar.update_year(self.monthCalendar.showingYear)
             self.calendarType = "year"
         self.show_calendar()
 
@@ -61,3 +64,8 @@ class CalendarFrame(tkinter.Frame):
                 self.monthCalendar.update_month(12, self.monthCalendar.showingYear-1)
             else:
                 self.monthCalendar.update_month(self.monthCalendar.showingMonth - 1, self.monthCalendar.showingYear)
+
+    def choose_month(self, event):
+        month = Clock.Clock.monthDict.index(event.widget["text"])
+        self.monthCalendar.update_month(month=month, year=self.yearCalendar.showingYear)
+        self.switch_mode()

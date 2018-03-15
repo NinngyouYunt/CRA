@@ -5,7 +5,7 @@ import MonthFrame, Clock
 
 class YearFrame(tkinter.Frame):
     def __init__(self, master=None):
-        super().__init__(master=master, bg="white")
+        super().__init__(master=master, bg="white",width=100)
         self.showingYear = Clock.Clock.get_instance().currentYear
         # Displaying year-view
         self.months = []
@@ -14,7 +14,7 @@ class YearFrame(tkinter.Frame):
         self.yearTitle.grid(row=0,column=0,columnspan=4)
 
         for i in range(12):
-            self.months.append(MonthFrame.MonthFrame(master=self))
+            self.months.append(MonthFrame.MonthFrame(i+1, master=self))
             self.months[i].grid(row=int(i/4)+1, column=i % 4, padx=5, pady=5)
 
         self.update_graphics()
@@ -28,3 +28,7 @@ class YearFrame(tkinter.Frame):
     def update_year(self, year):
         self.showingYear = year
         self.update_graphics()
+
+    def mouse_binding(self, callback):
+        for month in self.months:
+            month.mouse_binding(callback)
