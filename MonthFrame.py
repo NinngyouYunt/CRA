@@ -63,12 +63,15 @@ class MonthFrame(tk.Frame):
                     if current_month_calendar[week][day][0] != 0:
                         self.days[week][day].config(text=current_month_calendar[week][day][0])
                         self.days[week][day].config(font=Font(weight="bold", size=self.fontSize-3), fg="black")
+                        # Highlight today
                         if self.showingYear == Clock.get_instance().currentYear and \
                                 self.showingMonth == Clock.get_instance().currentMonth and \
                                 self.days[week][day]["text"] == Clock.get_instance().currentDay:
                             self.days[week][day].config(fg="blue")
                     elif current_month_calendar[week][day][0] == 0:
                         self.days[week][day].config(font=Font(weight="normal", size=self.fontSize-3))
+                        # Check if the source is MonthFrame
+                        # MonthFrame is used in YearFrame, and only fill out other dates when using its subclass
                         if type(self) is not MonthFrame:
                             if week < 1:
                                 self.days[week][day].config(text=prev_month[-1][day][0])
@@ -86,10 +89,12 @@ class MonthFrame(tk.Frame):
                         self.days[week][day].config(text="")
         self.update()
 
+    # Change the displayed months and refresh the contents
     def update_month(self, month, year):
         self.showingYear = year
         self.showingMonth = month
         self.update_graphics()
 
+    # Bind an action to the month title
     def mouse_binding(self, callback):
         self.monthTitle.bind("<Button-1>", callback)

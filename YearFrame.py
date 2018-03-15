@@ -19,16 +19,20 @@ class YearFrame(tkinter.Frame):
 
         self.update_graphics()
 
+    # Updating information in the months list and refreshing the frame
+    # could be private
     def update_graphics(self):
         self.yearTitle.config(text=self.showingYear)
         for i in range(len(self.months)):
             self.months[i].update_month(month=i+1, year=self.showingYear)
         self.update()
 
+    # Use to change the diaplayed year
     def update_year(self, year):
         self.showingYear = year
         self.update_graphics()
 
+    # Bind the mouseListener to months list
     def mouse_binding(self, callback):
         for month in self.months:
             month.mouse_binding(callback)
