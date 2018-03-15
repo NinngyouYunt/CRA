@@ -1,13 +1,14 @@
 import tkinter
-import YearFrame, IndependentMonthFrame, Clock
+import YearFrame, IndependentMonthFrame
+from Clock import *
 from tkinter.font import Font
 import MonthFrame
 
 
 class CalendarFrame(tkinter.Frame):
     def __init__(self, master=None):
-        super().__init__(master)
-        self.clock = Clock.Clock.get_instance()
+        super().__init__(master, bg="white")
+        self.clock = Clock.get_instance()
 
         self.yearCalendar = YearFrame.YearFrame(master=self)
         self.yearCalendar.mouse_binding(self.choose_month)
@@ -15,11 +16,13 @@ class CalendarFrame(tkinter.Frame):
         self.calendarType = "year"
 
         self.next_button = tkinter.Button(text="->", bg="white", font=Font(weight="bold", size=20),
-                                          command=self.next_function)
+                                          command=self.next_function, master=self)
         self.prev_button = tkinter.Button(text="<-", bg="white", font=Font(weight="bold", size=20),
-                                          command=self.prev_function)
-        self.switch_button = tkinter.Button(text="Change", bg="white", font=Font(weight="bold", size=20),
-                                            command=self.switch_mode)
+                                          command=self.prev_function, master=self)
+        self.switch_button = tkinter.Button(text="Change View", bg="white", font=Font(weight="bold", size=20),
+                                            command=self.switch_mode, master=self)
+        self.today_button = tkinter.Button(text="Today", bg="white", font=Font(weight="bold", size=20),
+                                           command=self.jump_to_today, master=self)
 
         self.show_calendar()
         self.place_content()
@@ -27,17 +30,18 @@ class CalendarFrame(tkinter.Frame):
 
     def show_calendar(self):
         if self.calendarType == "year":
-            self.yearCalendar.grid(row=2, column=1)
+            self.yearCalendar.grid(row=2, column=0, columnspan=4)
             self.monthCalendar.grid_remove()
         elif self.calendarType == "month":
             self.yearCalendar.grid_remove()
-            self.monthCalendar.grid(row=2, column=1)
+            self.monthCalendar.grid(row=2, column=0, columnspan=4, padx=10, pady=10)
         self.update()
 
     def place_content(self):
-        self.next_button.grid(row=1, column=2)
         self.prev_button.grid(row=1, column=0)
         self.switch_button.grid(row=1, column=1)
+        self.today_button.grid(row=1, column=2)
+        self.next_button.grid(row=1, column=3)
 
     def switch_mode(self):
         if self.calendarType == "year":
@@ -65,7 +69,14 @@ class CalendarFrame(tkinter.Frame):
             else:
                 self.monthCalendar.update_month(self.monthCalendar.showingMonth - 1, self.monthCalendar.showingYear)
 
+    def jump_to_today(self):
+        if self.calendarType == "year":
+            self.yearCalendar.update_year(Clock.get_instance().currentYear)
+        else:
+            self.monthCalendar.update_month(Clock.get_instance().currentMonth, Clock.get_instance().currentYear)
+
     def choose_month(self, event):
-        month = Clock.Clock.monthDict.index(event.widget["text"])
+        month = Clock.monthDict.index(event.widget["text"])
         self.monthCalendar.update_month(month=month, year=self.yearCalendar.showingYear)
         self.switch_mode()
+

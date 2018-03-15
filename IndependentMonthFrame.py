@@ -1,9 +1,10 @@
 import MonthFrame
 from Clock import *
 
+
 class IndependentMonthFrame(MonthFrame.MonthFrame):
     def __init__(self, master=None):
-        super().__init__(month=Clock.get_instance().currentMonth, master=master)
+        super().__init__(month=Clock.get_instance().currentMonth, master=master, font_size=17)
 
     def place_content(self):
         super().place_content()
