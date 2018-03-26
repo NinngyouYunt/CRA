@@ -84,6 +84,6 @@ class CalendarFrame(tkinter.Frame):
     # The action that is passed to the YearFrame to switch from year to a specific month
     def choose_month(self, event):
         month = Clock.monthDict.index(event.widget["text"])
-        self.monthCalendar.update_month(month=month, year=self.yearCalendar.showingYear)
+        self.monthCalendar.update_month(month=month+1, year=self.yearCalendar.showingYear)
         self.switch_mode()
 
