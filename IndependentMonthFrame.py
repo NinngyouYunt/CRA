@@ -8,8 +8,8 @@ class IndependentMonthFrame(MonthFrame.MonthFrame):
 
     def place_content(self):
         super().place_content()
-        self.monthTitle.config(text=str(Clock.monthDict[self.showingMonth-1])+" "+str(self.showingYear))
+        self.monthTitle.config(text=str(Clock.monthTuple[self.showingMonth - 1]) + " " + str(self.showingYear))
 
     def update_graphics(self):
         super().update_graphics()
-        self.monthTitle.config(text=str(Clock.monthDict[self.showingMonth-1])+" "+str(self.showingYear))
+        self.monthTitle.config(text=str(Clock.monthTuple[self.showingMonth - 1]) + " " + str(self.showingYear))

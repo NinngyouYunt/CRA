@@ -23,12 +23,12 @@ class MonthFrame(tk.Frame):
     # Add widgets into the frame, call in __init__()
     def place_content(self):
         # Placing title Label
-        self.monthTitle.config(text=Clock.monthDict[self.showingMonth-1],
+        self.monthTitle.config(text=Clock.monthTuple[self.showingMonth - 1],
                                font=Font(size=self.fontSize,weight="bold"), bg="white")
         self.monthTitle.grid(row=0, column=0, columnspan=7)
         # Placing week title Label
         for weekTitle in range(7):
-            self.weekTitle.append(tk.Label(master=self, text=Clock.weekDict[weekTitle][0:2],
+            self.weekTitle.append(tk.Label(master=self, text=Clock.weekTuple[weekTitle][0:2],
                                            font=Font(size=self.fontSize-5), bg="white"))
             self.weekTitle[weekTitle].grid(row=1, column=weekTitle, pady=2, padx=5)
         # Placing days Label
@@ -96,5 +96,12 @@ class MonthFrame(tk.Frame):
         self.update_graphics()
 
     # Bind an action to the month title
-    def mouse_binding(self, callback):
-        self.monthTitle.bind("<Button-1>", callback)
+    def bind_action_month_title(self, callback):
+        self.monthTitle.bind("<Button-1>", lambda event, m=self.showingMonth: callback(m))
+
+    def bind_action_days(self, callback):
+        for week in self.days:
+            for day in week:
+                if day.cget("text") != "":
+                    day.bind("<Button-1>", lambda event, d=day.cget("text"), m=self.showingMonth,
+                             y=self.showingYear: callback(d, m, y))

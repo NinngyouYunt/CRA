@@ -6,11 +6,11 @@ class Clock:
     instanceCount = 0
     instance = None
     # Used for other classes to reference and access
-    monthDict = ("January", "February", "March", "April",
-                 "May", "June", "July", "August",
-                 "September", "October", "November", "December")
-    weekDict = ("Sunday", "Monday", "Tuesday", "Wednesday",
-                "Thursday", "Friday", "Saturday")
+    monthTuple = ("January", "February", "March", "April",
+                  "May", "June", "July", "August",
+                  "September", "October", "November", "December")
+    weekTuple = ("Sunday", "Monday", "Tuesday", "Wednesday",
+                 "Thursday", "Friday", "Saturday")
 
     # Should never be called somewhere else
     # Should be private
