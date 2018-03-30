@@ -1,5 +1,11 @@
 from TODO.Event import *
+from tkinter import *
 
-e = Event(True, False, "2018", "2017", 10, "this is title", "this is content")
-e.check()
 
+root = Tk()
+
+# icon from https://www.flaticon.com/free-icon/pencil-edit-button_61456
+photo = PhotoImage(file="pencil-edit-button.png")
+Button(text="hello", image=photo, master=root).grid()
+
+root.mainloop()

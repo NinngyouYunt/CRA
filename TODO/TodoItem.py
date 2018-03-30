@@ -8,11 +8,20 @@ class TodoItem(tkinter.Frame):
 
     def __init__(self, event, master=None):
         super().__init__(master, bd=1, relief="ridge")
+
         self.event = event
+
+        # https://www.flaticon.com/free-icon/pencil-edit-button_61456
+        self.editButtonIcon = tkinter.PhotoImage(file="edit-button-icon.png")
+        # https://www.flaticon.com/free-icon/rubbish-bin_63260#term=delete&page=1&position=5
+        self.deleteButtonIcon = tkinter.PhotoImage(file="delete-button-icon.png")
+
         self.titleLabel = tkinter.Label(master=self)
         self.dueDateLabel = tkinter.Label(master=self)
         self.priorityLabel = tkinter.Label(master=self)
-        self.checkButton = tkinter.Button(master=self, command=self.check_button_action)
+        self.checkButton = tkinter.Button(master=self)
+        self.deleteButton = tkinter.Button(master=self, image=self.deleteButtonIcon)
+        self.editButton = tkinter.Button(master=self, image=self.editButtonIcon)
 
         self.place_content()
 
@@ -24,16 +33,20 @@ class TodoItem(tkinter.Frame):
         self.update()
 
     def place_content(self):
+
         self.titleLabel.config(width=self.labelWidth, anchor="w",
                                justify=tkinter.LEFT, wraplength=self.labelWidth*8)
         self.dueDateLabel.config(width=self.labelWidth, anchor="e")
-
-        self.checkButton.config(text="Done")
+        self.checkButton.config(command=self.check_button_action, text="Done")
+        self.deleteButton.config(command=self.delete_button_action)
+        self.editButton.config(command=self.edit_button_action)
 
         self.titleLabel.grid(row=0, column=1, sticky="sw", padx=10, pady=2)
         self.dueDateLabel.grid(row=1, column=1, padx=10)
-        self.priorityLabel.grid(row=0, column=2, rowspan=2, ipadx=7)
+        self.priorityLabel.grid(row=0, column=2, rowspan=2)
         self.checkButton.grid(row=0, column=0, rowspan=2, padx=7)
+        self.editButton.grid(row=0, column=3, padx=7)
+        self.deleteButton.grid(row=1, column=3, padx=7)
         self.update_content()
 
     def check_item(self):
@@ -52,8 +65,14 @@ class TodoItem(tkinter.Frame):
         self.update()
 
     def check_button_action(self):
-        self.event.isDone = not self.event.isDone
+        self.event.change_done_status()
         self.check_item()
 
     def grid(self,**kwargs):
         super().grid(ipady=5, **kwargs)
+
+    def delete_button_action(self):
+        pass
+
+    def edit_button_action(self):
+        pass
