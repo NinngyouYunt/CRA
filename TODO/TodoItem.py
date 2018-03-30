@@ -1,5 +1,5 @@
 import tkinter
-import Event
+from tkinter.font import Font
 
 
 class TodoItem(tkinter.Frame):
@@ -22,14 +22,27 @@ class TodoItem(tkinter.Frame):
 
     def place_content(self):
         self.checkButton.config(text="Done")
-        self.titleLabel.grid(row=0, column=1, rowspan=3)
-        self.dueDateLabel.grid(row=1, column=2, rowspan=2)
-        self.priorityLabel.grid(row=0, column=4, columnspan=2)
-        self.checkButton.grid(row=0, column=0, columnspan=2)
+
+        self.checkButton.bind("<Button-1>", self.check_button_action)
+
+        self.titleLabel.grid(row=0, column=1, columnspan=3)
+        self.dueDateLabel.grid(row=1, column=2, columnspan=2)
+        self.priorityLabel.grid(row=0, column=4, rowspan=2)
+        self.checkButton.grid(row=0, column=0, rowspan=2)
         self.update_content()
 
-
-tk = tkinter.Tk()
-todoitem = TodoItem(Event.E)
-
-tk.mainloop()
+    def check_button_action(self, event):
+        # Uncheck
+        if self.event.isDone:
+            self.checkButton.config(bg="white")
+            self.titleLabel.config(font=Font(overstrike=0))
+            self.dueDateLabel.config(font=Font(overstrike=0))
+            self.priorityLabel.config(font=Font(overstrike=0))
+        # Check
+        else:
+            self.checkButton.config(bg="red")
+            self.titleLabel.config(font=Font(overstrike=1))
+            self.dueDateLabel.config(font=Font(overstrike=1))
+            self.priorityLabel.config(font=Font(overstrike=1))
+        self.event.isDone = not self.event.isDone
+        self.update()
