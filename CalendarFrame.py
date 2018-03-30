@@ -10,8 +10,8 @@ class CalendarFrame(tkinter.Frame):
         super().__init__(master, bg="white")
         # Creating all the frames
         self.yearCalendar = YearFrame.YearFrame(master=self)
-        self.yearCalendar.mouse_binding(self.choose_month)
         self.monthCalendar = IndependentMonthFrame.IndependentMonthFrame(master=self)
+        self.binding_events()
         self.calendarType = "year"
         # Creating all the buttons
         self.next_button = tkinter.Button(text="->", bg="white", font=Font(weight="bold", size=20),
@@ -82,8 +82,17 @@ class CalendarFrame(tkinter.Frame):
             self.monthCalendar.update_month(Clock.get_instance().currentMonth, Clock.get_instance().currentYear)
 
     # The action that is passed to the YearFrame to switch from year to a specific month
-    def choose_month(self, event):
-        month = Clock.monthTuple.index(event.widget["text"])
+    def click_month_title(self, month):
         self.monthCalendar.update_month(month=month, year=self.yearCalendar.showingYear)
         self.switch_mode()
 
+    # action listener for clicking on each of the day label in a calendar
+    def click_day(self, day, month, year):
+        show = str(year)+"/"+str(month)+"/"+str(day)
+        print(show, "was clicked")
+
+    # Pass all the event callback that need to be bind into each frame
+    def binding_events(self):
+        self.yearCalendar.bind_to_month_title(self.click_month_title)
+        self.yearCalendar.bind_to_days(self.click_day)
+        self.monthCalendar.bind_action_days(self.click_day)

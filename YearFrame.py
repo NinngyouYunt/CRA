@@ -32,7 +32,12 @@ class YearFrame(tkinter.Frame):
         self.showingYear = year
         self.update_graphics()
 
-    # Bind the mouseListener to months list
-    def mouse_binding(self, callback):
+    # Pass the callback the months for binding to month titles
+    def bind_to_month_title(self, callback):
         for month in self.months:
-            month.mouse_binding(callback)
+            month.bind_action_month_title(callback)
+
+    # pass the callback to months for binding to days
+    def bind_to_days(self, callback):
+        for month in self.months:
+            month.bind_action_days(callback)
