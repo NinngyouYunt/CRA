@@ -1,5 +1,5 @@
-import MonthFrame
-from Clock import *
+from Calendar import MonthFrame
+from Calendar.Clock import *
 
 
 class IndependentMonthFrame(MonthFrame.MonthFrame):
@@ -39,4 +39,8 @@ class IndependentMonthFrame(MonthFrame.MonthFrame):
                     else:
                         day.bind("<Button-1>", lambda event, d=day.cget("text"), m=self.showingMonth+1,
                                  y=self.showingYear: self.dayCallback(d, m, y))
+                # Current month
+                else:
+                    day.bind("<Button-1>", lambda event, d=day.cget("text"), m=self.showingMonth,
+                             y=self.showingYear: self.dayCallback(d, m, y))
 

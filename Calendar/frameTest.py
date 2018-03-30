@@ -1,6 +1,5 @@
 import tkinter as tk
-import CalendarFrame
-
+from Calendar import CalendarFrame
 
 root = tk.Tk(className="FrameTesting")
 root.config(bg="white")

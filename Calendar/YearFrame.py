@@ -1,6 +1,6 @@
 import tkinter
 from tkinter.font import Font
-import MonthFrame, Clock
+from Calendar import Clock, MonthFrame
 
 
 class YearFrame(tkinter.Frame):
@@ -14,7 +14,7 @@ class YearFrame(tkinter.Frame):
         self.yearTitle.grid(row=0,column=0,columnspan=4)
 
         for i in range(12):
-            self.months.append(MonthFrame.MonthFrame(i+1, master=self))
+            self.months.append(MonthFrame.MonthFrame(i + 1, master=self))
             self.months[i].grid(row=int(i/4)+1, column=i % 4, padx=5, pady=5)
 
         self.update_graphics()

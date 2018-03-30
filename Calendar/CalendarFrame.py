@@ -1,8 +1,7 @@
 import tkinter
-import YearFrame, IndependentMonthFrame
-from Clock import *
+from Calendar import IndependentMonthFrame, YearFrame
+from Calendar.Clock import *
 from tkinter.font import Font
-import MonthFrame
 
 
 class CalendarFrame(tkinter.Frame):
