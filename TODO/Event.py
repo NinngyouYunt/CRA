@@ -24,8 +24,9 @@ class Event:
 
     def update(self, **kwargs):
         for key, value in kwargs.items():
-            if key in Event.contentTuple:
+            if key in Event.contentTuple and key != "input_date":
                 setattr(self, key, value)
+        # Set input-date to current date
 
     def check_title(self):
         print(getattr(self, "title"))

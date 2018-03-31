@@ -9,6 +9,7 @@ root = Tk()
 def doThis():
     print(cb1Var.get())
 
+
 cb1Var = IntVar()
 cb1 = Checkbutton(text="hello", master=root, command=doThis, variable=cb1Var).grid()
 Checkbutton(text="hello2", master=root).grid()

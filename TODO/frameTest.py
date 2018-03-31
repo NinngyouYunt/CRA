@@ -5,7 +5,7 @@ from TODO.Event import Event
 
 
 tk = tkinter.Tk()
-todoitem = TodoItem(Event("title","content","10","2018/3/10", "1310", False, True, "2018/3/1"),
+todoItem = TodoItem(Event("title","content","10","2018/3/10", "1310", False, True, "2018/3/1"),
                     master=tk)
 
 eventList = [
@@ -14,8 +14,8 @@ eventList = [
     Event("Event2", "Content2", 2, "2018/12/11", "1320", False, True, "2018/3/1"),
 ]
 
-list = TodoItemList(eventList, master=tk)
+itemList = TodoItemList(eventList, master=tk)
 
-list.grid()
+itemList.grid()
 
 tk.mainloop()
