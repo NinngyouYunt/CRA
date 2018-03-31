@@ -19,9 +19,10 @@ class TodoItem(tkinter.Frame):
         self.titleLabel = tkinter.Label(master=self)
         self.dueDateLabel = tkinter.Label(master=self)
         self.priorityLabel = tkinter.Label(master=self)
-        self.checkButton = tkinter.Button(master=self)
         self.deleteButton = tkinter.Button(master=self, image=self.deleteButtonIcon)
         self.editButton = tkinter.Button(master=self, image=self.editButtonIcon)
+        self.checkButtonStatus = tkinter.IntVar()
+        self.checkButton = tkinter.Checkbutton(master=self, variable=self.checkButtonStatus)
 
         self.place_content()
 
@@ -36,32 +37,33 @@ class TodoItem(tkinter.Frame):
 
         self.titleLabel.config(width=self.labelWidth, anchor="w",
                                justify=tkinter.LEFT, wraplength=self.labelWidth*8)
-        self.dueDateLabel.config(width=self.labelWidth, anchor="e")
-        self.checkButton.config(command=self.check_button_action, text="Done")
-        self.deleteButton.config(command=self.delete_button_action)
-        self.editButton.config(command=self.edit_button_action)
+        self.dueDateLabel.config(anchor="e", width=int(self.labelWidth*0.9))
+        self.priorityLabel.config(anchor="w", width=int(self.labelWidth*0.1))
+        self.checkButton.config(command=self.check_button_action, anchor="c")
+        self.deleteButton.config(command=self.delete_button_action, anchor="c", bd=2, relief="ridge")
+        self.editButton.config(command=self.edit_button_action, anchor="c", bd=2, relief="ridge")
 
-        self.titleLabel.grid(row=0, column=1, sticky="sw", padx=10, pady=2)
-        self.dueDateLabel.grid(row=1, column=1, padx=10)
-        self.priorityLabel.grid(row=0, column=2, rowspan=2)
-        self.checkButton.grid(row=0, column=0, rowspan=2, padx=7)
-        self.editButton.grid(row=0, column=3, padx=7)
+        self.titleLabel.grid(row=0, column=1, columnspan=2, padx=3, pady=0)
+        self.priorityLabel.grid(row=1, column=1)
+        self.dueDateLabel.grid(row=1, column=2)
+        self.checkButton.grid(row=0, column=0, rowspan=2, padx=2)
         self.deleteButton.grid(row=1, column=3, padx=7)
+        self.editButton.grid(row=0, column=3, padx=7)
         self.update_content()
 
     def check_item(self):
         # Is done, crossing it out
         if self.event.isDone is True:
-            self.checkButton.config(bg="red")
             self.titleLabel.config(font=Font(overstrike=1))
             self.dueDateLabel.config(font=Font(overstrike=1))
             self.priorityLabel.config(font=Font(overstrike=1))
+            self.checkButtonStatus.set(1)
         # Not done, keeping things
         else:
-            self.checkButton.config(bg="white")
             self.titleLabel.config(font=Font(overstrike=0))
             self.dueDateLabel.config(font=Font(overstrike=0))
             self.priorityLabel.config(font=Font(overstrike=0))
+            self.checkButtonStatus.set(0)
         self.update()
 
     def check_button_action(self):
@@ -69,7 +71,7 @@ class TodoItem(tkinter.Frame):
         self.check_item()
 
     def grid(self,**kwargs):
-        super().grid(ipady=5, **kwargs)
+        super().grid(ipady=3, ipadx=0, **kwargs)
 
     def delete_button_action(self):
         pass
