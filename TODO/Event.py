@@ -32,6 +32,6 @@ class Event:
         print(getattr(self, "title"))
 
     # Test USE only
-    def print(self):
-        print(self.title, self.content, self.priority, self.dueDate,
-              self.dueTime, self.isDone, self.overDue, self.inputDate)
+    def __str__(self):
+        return self.title + ", " + self.content + ", " + self.priority + ", " + self.dueDate + \
+               ", " + self.dueTime + ", " + self.isDone + ", " + self.overDue + ", " + self.inputDate
