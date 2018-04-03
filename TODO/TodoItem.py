@@ -13,10 +13,10 @@ class TodoItem(tkinter.Frame):
         self.event = event
 
         # https://www.flaticon.com/free-icon/pencil-edit-button_61456
-        pictureRoot = os.path.dirname(__file__) + "/assets"
-        self.editButtonIcon = tkinter.PhotoImage(file=os.path.join(pictureRoot, "edit-button-icon.png"))
+        picture_root = os.path.dirname(__file__) + "/assets"
+        self.editButtonIcon = tkinter.PhotoImage(file=os.path.join(picture_root, "edit-button-icon.png"))
         # https://www.flaticon.com/free-icon/rubbish-bin_63260#term=delete&page=1&position=5
-        self.deleteButtonIcon = tkinter.PhotoImage(file=os.path.join(pictureRoot, "delete-button-icon.png"))
+        self.deleteButtonIcon = tkinter.PhotoImage(file=os.path.join(picture_root, "delete-button-icon.png"))
 
         self.titleLabel = tkinter.Label(master=self)
         self.dueDateLabel = tkinter.Label(master=self)
