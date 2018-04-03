@@ -1,4 +1,4 @@
-import TODO.TodoItem as TodoItem, TODO.Event as Event
+import TODO.TodoItem as TodoItem
 import tkinter
 
 
