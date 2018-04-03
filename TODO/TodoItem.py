@@ -7,7 +7,7 @@ class TodoItem(tkinter.Frame):
 
     labelWidth = 20
 
-    def __init__(self, event, master=None):
+    def __init__(self, event, master=None, delete_action=None):
         super().__init__(master, bd=1, relief="ridge")
 
         self.event = event
@@ -25,6 +25,7 @@ class TodoItem(tkinter.Frame):
         self.editButton = tkinter.Button(master=self, image=self.editButtonIcon)
         self.checkButtonStatus = tkinter.IntVar()
         self.checkButton = tkinter.Checkbutton(master=self, variable=self.checkButtonStatus)
+        self.bind_delete_action(delete_action)
 
         self.place_content()
 
@@ -42,7 +43,7 @@ class TodoItem(tkinter.Frame):
         self.dueDateLabel.config(anchor="e", width=int(self.labelWidth*0.9))
         self.priorityLabel.config(anchor="w", width=int(self.labelWidth*0.1))
         self.checkButton.config(command=self.check_button_action, anchor="c")
-        self.deleteButton.config(command=self.delete_button_action, anchor="c", bd=2, relief="ridge")
+        self.deleteButton.config(anchor="c", bd=2, relief="ridge")
         self.editButton.config(command=self.edit_button_action, anchor="c", bd=2, relief="ridge")
 
         self.titleLabel.grid(row=0, column=1, columnspan=2, padx=3, pady=0)
@@ -75,8 +76,11 @@ class TodoItem(tkinter.Frame):
     def grid(self,**kwargs):
         super().grid(ipady=3, ipadx=0, **kwargs)
 
-    def delete_button_action(self):
-        pass
+    def bind_delete_action(self, parent_callback):
+        self.deleteButton.config(command=lambda: parent_callback(self))
 
     def edit_button_action(self):
-        pass
+        print("Clicked edit button")
+
+    def __eq__(self, other):
+        return self.event == other.event

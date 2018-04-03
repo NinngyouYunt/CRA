@@ -35,3 +35,6 @@ class Event:
     def __str__(self):
         return self.title + ", " + self.content + ", " + self.priority + ", " + self.dueDate + \
                ", " + self.dueTime + ", " + self.isDone + ", " + self.overDue + ", " + self.inputDate
+
+    def __eq__(self, other):
+        return self.title == other.title
