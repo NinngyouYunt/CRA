@@ -25,3 +25,4 @@ class TodoItemList(tkinter.Frame):
         obj.grid_forget()
         self.itemList.remove(obj)
         self.update_content()
+

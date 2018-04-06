@@ -11,6 +11,7 @@ class TodoItem(tkinter.Frame):
         super().__init__(master, bd=1, relief="ridge")
 
         self.event = event
+        self.editing = False
 
         # https://www.flaticon.com/free-icon/pencil-edit-button_61456
         picture_root = os.path.dirname(__file__) + "/assets"
@@ -80,7 +81,37 @@ class TodoItem(tkinter.Frame):
         self.deleteButton.config(command=lambda: parent_callback(self))
 
     def edit_button_action(self):
-        print("Clicked edit button")
+        if self.editing is not True:
+            self.editing = True
+            EditWindow(self, self.edit_callback)
+            print("Open Edit Window")
+        else:
+            print("Editing Window Opened")
+
+    def edit_callback(self, event):
+        self.editing = False
+        if event is None:
+            print("Cancel")
+        else:
+            print(event)
 
     def __eq__(self, other):
         return self.event == other.event
+
+
+class EditWindow(tkinter.Toplevel):
+
+    def __init__(self, parent, callback):
+        super().__init__(parent)
+        self.callback = callback
+        tkinter.Button(self, text="Save", command=self.save).grid()
+        tkinter.Button(self, text="Cancel", command=self.cancel).grid()
+        self.protocol("WM_DELETE_WINDOW", self.cancel)
+
+    def save(self):
+        self.callback('hello')
+        self.destroy()
+
+    def cancel(self):
+        self.callback(None)
+        self.destroy()
