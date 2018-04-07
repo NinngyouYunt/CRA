@@ -1,9 +1,9 @@
-import tkinter
+import tkinter as tk
 from tkinter.font import Font
 import os
 
 
-class TodoItem(tkinter.Frame):
+class TodoItem(tk.Frame):
 
     labelWidth = 20
 
@@ -15,17 +15,17 @@ class TodoItem(tkinter.Frame):
 
         # https://www.flaticon.com/free-icon/pencil-edit-button_61456
         picture_root = os.path.dirname(__file__) + "/assets"
-        self.editButtonIcon = tkinter.PhotoImage(file=os.path.join(picture_root, "edit-button-icon.png"))
+        self.editButtonIcon = tk.PhotoImage(file=os.path.join(picture_root, "edit-button-icon.png"))
         # https://www.flaticon.com/free-icon/rubbish-bin_63260#term=delete&page=1&position=5
-        self.deleteButtonIcon = tkinter.PhotoImage(file=os.path.join(picture_root, "delete-button-icon.png"))
+        self.deleteButtonIcon = tk.PhotoImage(file=os.path.join(picture_root, "delete-button-icon.png"))
 
-        self.titleLabel = tkinter.Label(master=self)
-        self.dueDateLabel = tkinter.Label(master=self)
-        self.priorityLabel = tkinter.Label(master=self)
-        self.deleteButton = tkinter.Button(master=self, image=self.deleteButtonIcon)
-        self.editButton = tkinter.Button(master=self, image=self.editButtonIcon)
-        self.checkButtonStatus = tkinter.IntVar()
-        self.checkButton = tkinter.Checkbutton(master=self, variable=self.checkButtonStatus)
+        self.titleLabel = tk.Label(master=self)
+        self.dueDateLabel = tk.Label(master=self)
+        self.priorityLabel = tk.Label(master=self)
+        self.deleteButton = tk.Button(master=self, image=self.deleteButtonIcon)
+        self.editButton = tk.Button(master=self, image=self.editButtonIcon)
+        self.checkButtonStatus = tk.IntVar()
+        self.checkButton = tk.Checkbutton(master=self, variable=self.checkButtonStatus)
         self.bind_delete_action(delete_action)
 
         self.place_content()
@@ -40,7 +40,7 @@ class TodoItem(tkinter.Frame):
     def place_content(self):
 
         self.titleLabel.config(width=self.labelWidth, anchor="w",
-                               justify=tkinter.LEFT, wraplength=self.labelWidth*8)
+                               justify=tk.LEFT, wraplength=self.labelWidth*8)
         self.dueDateLabel.config(anchor="e", width=int(self.labelWidth*0.9))
         self.priorityLabel.config(anchor="w", width=int(self.labelWidth*0.1))
         self.checkButton.config(command=self.check_button_action, anchor="c")
@@ -99,19 +99,48 @@ class TodoItem(tkinter.Frame):
         return self.event == other.event
 
 
-class EditWindow(tkinter.Toplevel):
+class EditWindow(tk.Toplevel):
 
     def __init__(self, parent, callback):
         super().__init__(parent)
         self.callback = callback
-        tkinter.Button(self, text="Save", command=self.save).grid()
-        tkinter.Button(self, text="Cancel", command=self.cancel).grid()
+        self.saveButton = tk.Button(self, text="Save", command=self.save)
+        self.cancelButton = tk.Button(self, text="Cancel", command=self.cancel)
+        self.dueDateButton = tk.Entry(self)
+        self.dueTimeButton = tk.Entry(self)
+        self.priorityText = tk.Entry(self)
+        self.titleText = tk.Entry(self)
+        self.contentText = tk.Entry(self)
+
+        self.titleLabel = tk.Label(self, text="Title(*):")
+        self.contentLabel = tk.Label(self, text="Content:")
+        self.priorityLabel = tk.Label(self, text="Priority:")
+        self.dueDateLabel = tk.Label(self, text="Date(yyyy-mm-dd):")
+        self.dueTimeLabel = tk.Label(self, text="Time(hh:mm):")
+
         self.protocol("WM_DELETE_WINDOW", self.cancel)
+        self.place_content()
+
+    def place_content(self):
+        self.titleLabel.grid(row=0, column=0)
+        self.titleText.grid(row=0, column=1)
+        self.contentLabel.grid(row=1, column=0)
+        self.contentText.grid(row=1, column=1)
+        self.priorityLabel.grid(row=2, column=0)
+        self.priorityText.grid(row=2, column=1)
+        self.dueDateLabel.grid(row=3, column=0)
+        self.dueDateButton.grid(row=3, column=1)
+        self.dueTimeLabel.grid(row=4, column=0)
+        self.dueTimeButton.grid(row=4, column=1)
+        self.saveButton.grid(row=5, columnspan=2)
+        self.cancelButton.grid(row=6, columnspan=2)
 
     def save(self):
         self.callback('hello')
         self.destroy()
 
     def cancel(self):
-        self.callback(None)
-        self.destroy()
+        if self.priorityText.get() == "" and self.titleText.get() == "" \
+                and self.contentText == "" and self.dueTimeButton == "" and self.dueDateLabel == "":
+            self.callback(None)
+            self.destroy()
