@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter.font import Font
+from tkinter import messagebox
 import os
 
 
@@ -11,7 +12,7 @@ class TodoItem(tk.Frame):
         super().__init__(master, bd=1, relief="ridge")
 
         self.event = event
-        self.editing = False
+        self.editingWindow = None
 
         # https://www.flaticon.com/free-icon/pencil-edit-button_61456
         picture_root = os.path.dirname(__file__) + "/assets"
@@ -81,15 +82,15 @@ class TodoItem(tk.Frame):
         self.deleteButton.config(command=lambda: parent_callback(self))
 
     def edit_button_action(self):
-        if self.editing is not True:
-            self.editing = True
-            EditWindow(self, self.edit_callback)
+        if self.editingWindow is None:
+            self.editingWindow = EditWindow(self, self.edit_callback)
             print("Open Edit Window")
         else:
+            self.editingWindow.focus_force()
             print("Editing Window Opened")
 
     def edit_callback(self, event):
-        self.editing = False
+        self.editingWindow = None
         if event is None:
             print("Cancel")
         else:
@@ -103,14 +104,16 @@ class EditWindow(tk.Toplevel):
 
     def __init__(self, parent, callback):
         super().__init__(parent)
+        self.title("Edit Event")
+        self.resizable(False, False)
         self.callback = callback
         self.saveButton = tk.Button(self, text="Save", command=self.save)
         self.cancelButton = tk.Button(self, text="Cancel", command=self.cancel)
-        self.dueDateButton = tk.Entry(self)
-        self.dueTimeButton = tk.Entry(self)
-        self.priorityText = tk.Entry(self)
-        self.titleText = tk.Entry(self)
-        self.contentText = tk.Entry(self)
+        self.dueDateInput = tk.Entry(self)
+        self.dueTimeInput = tk.Entry(self)
+        self.priorityInput = tk.Entry(self)
+        self.titleInput = tk.Entry(self)
+        self.contentInput = tk.Entry(self)
 
         self.titleLabel = tk.Label(self, text="Title(*):")
         self.contentLabel = tk.Label(self, text="Content:")
@@ -123,15 +126,15 @@ class EditWindow(tk.Toplevel):
 
     def place_content(self):
         self.titleLabel.grid(row=0, column=0)
-        self.titleText.grid(row=0, column=1)
+        self.titleInput.grid(row=0, column=1)
         self.contentLabel.grid(row=1, column=0)
-        self.contentText.grid(row=1, column=1)
+        self.contentInput.grid(row=1, column=1)
         self.priorityLabel.grid(row=2, column=0)
-        self.priorityText.grid(row=2, column=1)
+        self.priorityInput.grid(row=2, column=1)
         self.dueDateLabel.grid(row=3, column=0)
-        self.dueDateButton.grid(row=3, column=1)
+        self.dueDateInput.grid(row=3, column=1)
         self.dueTimeLabel.grid(row=4, column=0)
-        self.dueTimeButton.grid(row=4, column=1)
+        self.dueTimeInput.grid(row=4, column=1)
         self.saveButton.grid(row=5, columnspan=2)
         self.cancelButton.grid(row=6, columnspan=2)
 
@@ -140,7 +143,15 @@ class EditWindow(tk.Toplevel):
         self.destroy()
 
     def cancel(self):
-        if self.priorityText.get() == "" and self.titleText.get() == "" \
-                and self.contentText == "" and self.dueTimeButton == "" and self.dueDateLabel == "":
+        if self.priorityInput.get() == "" and self.titleInput.get() == "" \
+                and self.contentInput.get() == "" and self.dueTimeInput.get() == "" \
+                and self.dueDateInput.get() == "":
             self.callback(None)
             self.destroy()
+        else:
+            print(self.titleInput.get() == "")
+            result = messagebox.askyesno("Cancel", "Do you want to abandon changes?", icon="warning", parent=self)
+            if result:
+                self.callback(None)
+                self.destroy()
+
