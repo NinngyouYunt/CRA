@@ -171,4 +171,3 @@ class EditWindow(tk.Toplevel):
             if result:
                 self.callback(None)
                 self.destroy()
-
