@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter.font import Font
 from tkinter import messagebox
+from TODO import Event
 import os
 
 
@@ -32,14 +33,13 @@ class TodoItem(tk.Frame):
         self.place_content()
 
     def update_content(self):
-        self.check_item()
         self.titleLabel.config(text=self.event.title)
         self.dueDateLabel.config(text=self.event.dueDate)
         self.priorityLabel.config(text=self.event.priority)
+        self.check_item()
         self.update()
 
     def place_content(self):
-
         self.titleLabel.config(width=self.labelWidth, anchor="w",
                                justify=tk.LEFT, wraplength=self.labelWidth*8)
         self.dueDateLabel.config(anchor="e", width=int(self.labelWidth*0.9))
@@ -94,7 +94,9 @@ class TodoItem(tk.Frame):
         if event is None:
             print("Cancel")
         else:
-            print(event)
+            self.event.update(event)
+            print("Editing Event")
+            self.update_content()
 
     def __eq__(self, other):
         return self.event == other.event
@@ -115,7 +117,7 @@ class EditWindow(tk.Toplevel):
         self.titleInput = tk.Entry(self)
         self.contentInput = tk.Entry(self)
 
-        self.titleLabel = tk.Label(self, text="Title(*):")
+        self.titleLabel = tk.Label(self, text="Title:")
         self.contentLabel = tk.Label(self, text="Content:")
         self.priorityLabel = tk.Label(self, text="Priority:")
         self.dueDateLabel = tk.Label(self, text="Date(yyyy-mm-dd):")
@@ -138,8 +140,23 @@ class EditWindow(tk.Toplevel):
         self.saveButton.grid(row=5, columnspan=2)
         self.cancelButton.grid(row=6, columnspan=2)
 
+    def process_input(self, input, type):
+        if input == "":
+            return None
+        else:
+            return input
+
     def save(self):
-        self.callback('hello')
+        # Make empty input None
+        event = Event.Event(self.process_input(self.titleInput.get(), "title"),
+                            self.process_input(self.contentInput.get(), "content"),
+                            self.process_input(self.priorityInput.get(), "priority"),
+                            self.process_input(self.dueDateInput.get(), "dueDate"),
+                            self.process_input(self.dueTimeInput.get(), "dueTime"),
+                            None,
+                            None,
+                            "Right Now")
+        self.callback(event)
         self.destroy()
 
     def cancel(self):
