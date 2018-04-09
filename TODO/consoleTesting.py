@@ -23,16 +23,21 @@ from TODO.Event import *
 #
 # root.mainloop()
 
-def removeLineBreak(item):
-    return item[0:len(item)-1]
-# r - read only, w - overwrite/create, a - append
-file = open("testFile", "r")
+import datetime, time
 
-fileContent = file.readlines() # array with each line (line break is escape code)
-print(fileContent)
-fileContent = list(map(removeLineBreak, fileContent))
-print(fileContent)
+dueDate = "2018-3-14".split("-")
+try:
+    print(dueDate)
+    datetime.datetime(year=int(dueDate[0]), month=int(dueDate[1]), day=int(dueDate[2]))
+except (ValueError, IndexError) as error:
+    print("Please input a proper date \nFormat:yyyy-mm-dd")
 
-itemNumber = int(len(fileContent)/9)
-for i in range(itemNumber):
-    print(fileContent[i*9:i*9+9])
+now = datetime.datetime.now()
+if len(str(now.month)) < 2:
+    str = "0" + str(now.month)
+    print(str)
+else:
+    print(now.month)
+input="11:11:11"
+"".isdigit()
+print(time.strptime(input, '%H:%M'))

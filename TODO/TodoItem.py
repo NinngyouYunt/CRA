@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter.font import Font
 from tkinter import messagebox
 from TODO import Event
-import os
+import os, datetime, time
 
 
 class TodoItem(tk.Frame):
@@ -34,7 +34,7 @@ class TodoItem(tk.Frame):
 
     def update_content(self):
         self.titleLabel.config(text=self.event.title)
-        self.dueDateLabel.config(text=self.event.dueDate)
+        self.dueDateLabel.config(text="/".join(map(str, self.event.dueDate)))
         self.priorityLabel.config(text=self.event.priority)
         self.check_item()
         self.update()
@@ -140,24 +140,71 @@ class EditWindow(tk.Toplevel):
         self.saveButton.grid(row=5, columnspan=2)
         self.cancelButton.grid(row=6, columnspan=2)
 
-    def process_input(self, input, type):
-        if input == "":
-            return None
+    def process_input(self):
+        params = []
+        # Check if title is empty
+        if self.titleInput.get() == "":
+            params.append(None)
         else:
-            return input
+            params.append(self.titleInput.get())
+        # Check if content is empty
+        if self.contentInput.get() == "":
+            params.append(None)
+        else:
+            params.append(self.contentInput.get())
+        # Check if priority is empty
+        if self.priorityInput.get() == "":
+            params.append(None)
+        else:
+            # Check if priority is an integer
+            if self.priorityInput.get().isdigit() is False:
+                return "Please input integer for priority!"
+            else:
+                params.append(self.priorityInput.get())
+        # Check if dueDate is empty
+        if self.dueDateInput.get() == "":
+            params.append(None)
+        else:
+            # Check if dueDate is valid
+            due_date = self.dueDateInput.get().split("-")
+            try:
+                datetime.datetime(year=int(due_date[0]), month=int(due_date[1]), day=int(due_date[2]))
+                if len(due_date[1]) < 2:
+                    due_date[1] = "0" + due_date[1]
+                if len(due_date[2]) < 2:
+                    due_date[2] = "0" + due_date[2]
+                params.append(due_date)
+            except (ValueError, IndexError) as error:
+                return "Please input a proper date \nFormat: yyyy-mm-dd"
+        # Check if dueTime is empty
+        if self.dueTimeInput.get() == "":
+            params.append(None)
+        else:
+            # Check if dueTime is valid
+            try:
+                time.strptime(self.dueTimeInput.get(), '%H:%M')
+                due_time = self.dueTimeInput.get().split(":")
+                if len(due_time[0]) < 2:
+                    due_time[0] = "0" + due_time[0]
+                if len(due_time[1]) < 2:
+                    due_time[1] = "0" + due_time[1]
+                params.append(due_time)
+            except (IndexError, ValueError) as error:
+                return "Please input a proper time using 24-hour\nFormat: hh-mm"
+        # Append is_done = no change, is_late = no change
+        params.append(None)
+        params.append(None)
+        return params
 
     def save(self):
-        # Make empty input None
-        event = Event.Event(self.process_input(self.titleInput.get(), "title"),
-                            self.process_input(self.contentInput.get(), "content"),
-                            self.process_input(self.priorityInput.get(), "priority"),
-                            self.process_input(self.dueDateInput.get(), "dueDate"),
-                            self.process_input(self.dueTimeInput.get(), "dueTime"),
-                            None,
-                            None,
-                            "Right Now")
-        self.callback(event)
-        self.destroy()
+        params = self.process_input()
+        print(params)
+        if type(params) is str:
+            messagebox.showerror("Error", params, parent=self)
+        else:
+            event = Event.Event(*params)
+            self.callback(event)
+            self.destroy()
 
     def cancel(self):
         if self.priorityInput.get() == "" and self.titleInput.get() == "" \
