@@ -29,5 +29,3 @@ class EventFileStream:
             print(params)
             events.append(Event(*params))
         return events
-
-EventFileStream()
