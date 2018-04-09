@@ -39,10 +39,35 @@ class Event:
             if new_field is not None:
                 setattr(self, field, new_field)
 
+    def get_due_date(self):
+        date_str = str(self.dueDate[0])
+        if self.dueDate[1] < 10:
+            date_str = date_str + "/0" + str(self.dueDate[1])
+        else:
+            date_str = date_str + "/" + str(self.dueDate[1])
+        if self.dueDate[2] < 10:
+            date_str = date_str + "/0" + str(self.dueDate[2])
+        else:
+            date_str = date_str + "/" + str(self.dueDate[2])
+        return date_str
+
+    def get_due_time(self):
+        time_str = ""
+        if self.dueTime[0] < 10:
+            time_str = time_str + "0" + str(self.dueTime[0])
+        else:
+            time_str = time_str + ":" + str(self.dueTime[0])
+        if self.dueTime[1] < 10:
+            time_str = time_str + ":0" + str(self.dueTime[1])
+        else:
+            time_str = time_str + ":" + str(self.dueTime[1])
+        return time_str
+
+    def __eq__(self, other):
+        return self.title == other.title
+
     # Test USE only
     def __str__(self):
         return self.title + ", " + self.content + ", " + self.priority + ", " + self.dueDate + \
                ", " + self.dueTime + ", " + self.isDone + ", " + self.isLate
 
-    def __eq__(self, other):
-        return self.title == other.title

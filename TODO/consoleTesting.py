@@ -40,4 +40,6 @@ else:
     print(now.month)
 input="11:11:11"
 "".isdigit()
-print(time.strptime(input, '%H:%M'))
+
+due_date = ["1", "555", "3"]
+print(list(map(lambda x: int(x), due_date)))

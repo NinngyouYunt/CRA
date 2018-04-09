@@ -34,7 +34,7 @@ class TodoItem(tk.Frame):
 
     def update_content(self):
         self.titleLabel.config(text=self.event.title)
-        self.dueDateLabel.config(text="/".join(map(str, self.event.dueDate)))
+        self.dueDateLabel.config(text=self.event.get_due_date())
         self.priorityLabel.config(text=self.event.priority)
         self.check_item()
         self.update()
@@ -160,7 +160,7 @@ class EditWindow(tk.Toplevel):
             if self.priorityInput.get().isdigit() is False:
                 return "Please input integer for priority!"
             else:
-                params.append(self.priorityInput.get())
+                params.append(int(self.priorityInput.get()))
         # Check if dueDate is empty
         if self.dueDateInput.get() == "":
             params.append(None)
@@ -169,11 +169,7 @@ class EditWindow(tk.Toplevel):
             due_date = self.dueDateInput.get().split("-")
             try:
                 datetime.datetime(year=int(due_date[0]), month=int(due_date[1]), day=int(due_date[2]))
-                if len(due_date[1]) < 2:
-                    due_date[1] = "0" + due_date[1]
-                if len(due_date[2]) < 2:
-                    due_date[2] = "0" + due_date[2]
-                params.append(due_date)
+                params.append(list(map(lambda x: int(x), due_date)))
             except (ValueError, IndexError) as error:
                 return "Please input a proper date \nFormat: yyyy-mm-dd"
         # Check if dueTime is empty
@@ -184,11 +180,7 @@ class EditWindow(tk.Toplevel):
             try:
                 time.strptime(self.dueTimeInput.get(), '%H:%M')
                 due_time = self.dueTimeInput.get().split(":")
-                if len(due_time[0]) < 2:
-                    due_time[0] = "0" + due_time[0]
-                if len(due_time[1]) < 2:
-                    due_time[1] = "0" + due_time[1]
-                params.append(due_time)
+                params.append(list(map(lambda x: int(x), due_time)))
             except (IndexError, ValueError) as error:
                 return "Please input a proper time using 24-hour\nFormat: hh-mm"
         # Append is_done = no change, is_late = no change
