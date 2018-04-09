@@ -43,7 +43,7 @@ class TodoItem(tk.Frame):
         self.titleLabel.config(width=self.labelWidth, anchor="w",
                                justify=tk.LEFT, wraplength=self.labelWidth*8)
         self.dueDateLabel.config(anchor="e", width=int(self.labelWidth*0.9))
-        self.priorityLabel.config(anchor="w", width=int(self.labelWidth*0.1))
+        self.priorityLabel.config(anchor="e", width=int(self.labelWidth*0.1))
         self.checkButton.config(command=self.check_button_action, anchor="c")
         self.deleteButton.config(anchor="c", bd=2, relief="ridge")
         self.editButton.config(command=self.edit_button_action, anchor="c", bd=2, relief="ridge")
@@ -51,7 +51,7 @@ class TodoItem(tk.Frame):
         self.titleLabel.grid(row=0, column=1, columnspan=2, padx=3, pady=0)
         self.priorityLabel.grid(row=1, column=1)
         self.dueDateLabel.grid(row=1, column=2)
-        self.checkButton.grid(row=0, column=0, rowspan=2, padx=2)
+        self.checkButton.grid(row=0, column=0, rowspan=2)
         self.deleteButton.grid(row=1, column=3, padx=7)
         self.editButton.grid(row=0, column=3, padx=7)
         self.update_content()
@@ -162,7 +162,10 @@ class EditWindow(tk.Toplevel):
             if self.priorityInput.get().isdigit() is False:
                 return "Please input a non-negative integer for priority!"
             else:
-                params.append(int(self.priorityInput.get()))
+                if 0 <= int(self.priorityInput.get()) < 10:
+                    params.append(int(self.priorityInput.get()))
+                else:
+                    return "Priority is an integer between 0 and 9"
         # Check if dueDate is empty
         if self.dueDateInput.get() == "":
             params.append(None)
