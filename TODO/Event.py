@@ -68,6 +68,6 @@ class Event:
 
     # Test USE only
     def __str__(self):
-        return self.title + ", " + self.content + ", " + self.priority + ", " + self.dueDate + \
-               ", " + self.dueTime + ", " + self.isDone + ", " + self.isLate
+        return self.title + ", " + self.content + ", " + self.priority + ", " + str(self.dueDate) + \
+               ", " + str(self.dueTime) + ", " + self.isDone + ", " + self.isLate
 

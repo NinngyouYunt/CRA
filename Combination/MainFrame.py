@@ -21,9 +21,10 @@ class CRA(tkinter.Tk):
 
 eventList = [
     Event("Event1"
-          "12345678901234567890", "Content1", 1, "2018/03/10", "0510", True, True),
-    Event("Event2", "Content2", 2, "2018/12/11", "1320", False, True),
+          "12345678901234567890", "Content1", 1, [2018, 3, 14], [5,10], True, True),
+    Event("Event2", "Content2", 2, [2018, 12, 11], [13,20], False, True),
 ]
+
 CRA(eventList)
 
 
