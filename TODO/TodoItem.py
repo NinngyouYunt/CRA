@@ -109,13 +109,13 @@ class EditWindow(tk.Toplevel):
         self.title("Edit Event")
         self.resizable(False, False)
         self.callback = callback
-        self.saveButton = tk.Button(self, text="Save", command=self.save)
-        self.cancelButton = tk.Button(self, text="Cancel", command=self.cancel)
-        self.dueDateInput = tk.Entry(self)
-        self.dueTimeInput = tk.Entry(self)
-        self.priorityInput = tk.Entry(self)
         self.titleInput = tk.Entry(self)
         self.contentInput = tk.Entry(self)
+        self.priorityInput = tk.Entry(self)
+        self.dueDateInput = tk.Entry(self)
+        self.dueTimeInput = tk.Entry(self)
+        self.saveButton = tk.Button(self, text="Save", command=self.save)
+        self.cancelButton = tk.Button(self, text="Cancel", command=self.cancel)
 
         self.titleLabel = tk.Label(self, text="Title:")
         self.contentLabel = tk.Label(self, text="Content:")
@@ -128,15 +128,17 @@ class EditWindow(tk.Toplevel):
 
     def place_content(self):
         self.titleLabel.grid(row=0, column=0)
-        self.titleInput.grid(row=0, column=1)
         self.contentLabel.grid(row=1, column=0)
-        self.contentInput.grid(row=1, column=1)
         self.priorityLabel.grid(row=2, column=0)
-        self.priorityInput.grid(row=2, column=1)
         self.dueDateLabel.grid(row=3, column=0)
-        self.dueDateInput.grid(row=3, column=1)
         self.dueTimeLabel.grid(row=4, column=0)
+
+        self.titleInput.grid(row=0, column=1)
+        self.contentInput.grid(row=1, column=1)
+        self.priorityInput.grid(row=2, column=1)
+        self.dueDateInput.grid(row=3, column=1)
         self.dueTimeInput.grid(row=4, column=1)
+
         self.saveButton.grid(row=5, columnspan=2)
         self.cancelButton.grid(row=6, columnspan=2)
 
@@ -158,7 +160,7 @@ class EditWindow(tk.Toplevel):
         else:
             # Check if priority is an integer
             if self.priorityInput.get().isdigit() is False:
-                return "Please input integer for priority!"
+                return "Please input a non-negative integer for priority!"
             else:
                 params.append(int(self.priorityInput.get()))
         # Check if dueDate is empty
@@ -190,7 +192,7 @@ class EditWindow(tk.Toplevel):
 
     def save(self):
         params = self.process_input()
-        print(params)
+        print("Change", params)
         if type(params) is str:
             messagebox.showerror("Error", params, parent=self)
         else:
