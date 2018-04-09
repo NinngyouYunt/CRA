@@ -24,7 +24,6 @@ class CalendarFrame(tkinter.Frame):
         # Displaying content
         self.show_calendar()
         self.place_content()
-        self.grid()
 
     # Show the calendar that is matching self.calendarType
     def show_calendar(self):
