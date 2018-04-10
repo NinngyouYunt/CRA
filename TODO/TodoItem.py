@@ -84,6 +84,7 @@ class TodoItem(tk.Frame):
     def edit_button_action(self):
         if self.editingWindow is None:
             self.editingWindow = EventInputWindow(self, self.edit_callback, False)
+            self.editingWindow.focus_force()
             print("Open Edit Window")
         else:
             self.editingWindow.focus_force()
@@ -118,7 +119,10 @@ class EventInputWindow(tk.Toplevel):
         self.priorityInput = tk.Entry(self)
         self.dueDateInput = tk.Entry(self)
         self.dueTimeInput = tk.Entry(self)
-        self.saveButton = tk.Button(self, text="Save", command=self.save)
+        if self.mode:
+            self.saveButton = tk.Button(self, text="Add", command=self.save)
+        else:
+            self.saveButton = tk.Button(self, text="Save", command=self.save)
         self.cancelButton = tk.Button(self, text="Cancel", command=self.cancel)
 
         if self.mode:
@@ -132,6 +136,8 @@ class EventInputWindow(tk.Toplevel):
 
         self.protocol("WM_DELETE_WINDOW", self.cancel)
         self.place_content()
+
+        self.titleInput.focus_force()
 
     def place_content(self):
         self.titleLabel.grid(row=0, column=0)
