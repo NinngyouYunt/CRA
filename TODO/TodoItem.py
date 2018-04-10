@@ -83,7 +83,7 @@ class TodoItem(tk.Frame):
 
     def edit_button_action(self):
         if self.editingWindow is None:
-            self.editingWindow = EditWindow(self, self.edit_callback)
+            self.editingWindow = EventInputWindow(self, self.edit_callback, False)
             print("Open Edit Window")
         else:
             self.editingWindow.focus_force()
@@ -102,11 +102,15 @@ class TodoItem(tk.Frame):
         return self.event == other.event
 
 
-class EditWindow(tk.Toplevel):
+class EventInputWindow(tk.Toplevel):
 
-    def __init__(self, parent, callback):
+    def __init__(self, parent, callback, add_new=True):
         super().__init__(parent)
-        self.title("Edit Event")
+        self.mode = add_new # True - adding new event, False - editing event
+        if self.mode:
+            self.title("Add Event")
+        else:
+            self.title("Edit Event")
         self.resizable(False, False)
         self.callback = callback
         self.titleInput = tk.Entry(self)
@@ -117,7 +121,10 @@ class EditWindow(tk.Toplevel):
         self.saveButton = tk.Button(self, text="Save", command=self.save)
         self.cancelButton = tk.Button(self, text="Cancel", command=self.cancel)
 
-        self.titleLabel = tk.Label(self, text="Title:")
+        if self.mode:
+            self.titleLabel = tk.Label(self, text="Title(*):")
+        else:
+            self.titleLabel = tk.Label(self, text="Title:")
         self.contentLabel = tk.Label(self, text="Content:")
         self.priorityLabel = tk.Label(self, text="Priority:")
         self.dueDateLabel = tk.Label(self, text="Date(yyyy-mm-dd):")
@@ -146,7 +153,11 @@ class EditWindow(tk.Toplevel):
         params = []
         # Check if title is empty
         if self.titleInput.get() == "":
-            params.append(None)
+            # Title is mandatory for new event
+            if self.mode:
+                return "Title is a mandatory field for creating new event!"
+            else:
+                params.append(None)
         else:
             params.append(self.titleInput.get())
         # Check if content is empty
