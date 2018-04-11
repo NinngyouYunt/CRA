@@ -4,15 +4,25 @@ import os
 
 # Return a list of Event
 class EventFileStream:
+    instance = None
+
     def __init__(self):
         self.storageRoot = os.path.dirname(__file__) + "/storage"
-        self.events = []
         # read all files
-        for filename in os.listdir(self.storageRoot):
-            self.events = self.events + self.read_file(self, os.path.join(self.storageRoot, filename))
+        #for filename in os.listdir(self.storageRoot):
+        #    self.events = self.events + self.read_file(os.path.join(self.storageRoot, filename))
+
+    def read_file(self, filename):
+        return self.read_file_static(os.path.join(self.storageRoot, filename))
 
     @staticmethod
-    def read_file(self, path):
+    def getinstance():
+        if EventFileStream.instance is None:
+            EventFileStream.instance = EventFileStream()
+        return EventFileStream.instance
+
+    @staticmethod
+    def read_file_static(path):
         total_line = len(Event.contentTuple) + 1
         file_content = list(map(lambda item: item[:len(item)-1],
                                 open(path, "r").readlines()))

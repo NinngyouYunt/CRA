@@ -9,8 +9,8 @@ class CRA(tkinter.Tk):
     def __init__(self):
         super().__init__()
         self.resizable(False, False)
-        self.files = EventFileStream()
-        self.todoList = TodoItemList(self.files.events, master=self)
+        self.files = EventFileStream().getinstance().read_file("testFile")
+        self.todoList = TodoItemList(self.files, master=self)
         self.calendar = CalendarFrame()
         self.place_content()
         self.mainloop()
