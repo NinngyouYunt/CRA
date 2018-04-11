@@ -9,7 +9,7 @@ class TodoItem(tk.Frame):
 
     labelWidth = 20
 
-    def __init__(self, event, master=None, delete_action=None):
+    def __init__(self, event, master=None, delete_action=None, edit_action=None):
         super().__init__(master, bd=1, relief="ridge")
 
         self.event = event
@@ -29,6 +29,7 @@ class TodoItem(tk.Frame):
         self.checkButtonStatus = tk.IntVar()
         self.checkButton = tk.Checkbutton(master=self, variable=self.checkButtonStatus)
         self.bind_delete_action(delete_action)
+        self.parentEditCallback = edit_action
 
         self.place_content()
 
@@ -74,6 +75,7 @@ class TodoItem(tk.Frame):
     def check_button_action(self):
         self.event.change_done_status()
         self.check_item()
+        self.parentEditCallback("TEST")
 
     def grid(self,**kwargs):
         super().grid(ipady=3, ipadx=0, **kwargs)
@@ -98,6 +100,7 @@ class TodoItem(tk.Frame):
             self.event.update(event)
             print("Editing Event")
             self.update_content()
+            self.parentEditCallback("TEST")
 
     def __eq__(self, other):
         return self.event == other.event

@@ -11,7 +11,8 @@ class TodoItemList(tkinter.Frame):
         self.itemListFrame = tkinter.Frame(master=self)
         self.itemList = []
         for event in event_list:
-            self.itemList.append(TodoItem.TodoItem(event, master=self.itemListFrame, delete_action=self.delete_item))
+            self.itemList.append(TodoItem.TodoItem(event, master=self.itemListFrame,
+                                                   delete_action=self.delete_item, edit_action=self.edit_item))
         self.addEventButton = tkinter.Button(self, text="+", command=self.add_event_button_action)
         self.place_content()
 
@@ -32,6 +33,7 @@ class TodoItemList(tkinter.Frame):
         obj.grid_forget()
         self.itemList.remove(obj)
         self.update_content()
+        self.update_file("TEST")
 
     def get_events(self):
         events = []
@@ -44,10 +46,14 @@ class TodoItemList(tkinter.Frame):
             self.itemList.append(TodoItem.TodoItem(new_event, master=self.itemListFrame, delete_action=self.delete_item))
             self.itemList[len(self.itemList)-1].grid(column=0)
             self.update_content()
-            # TEST ONLY
-            EventFileStream.get_instance().save_file("testFile", self.get_events())
+            self.update_file("TEST")
 
+    def edit_item(self, edited_event):
+        self.update_file(edited_event)
 
+    def update_file(self, eventID):
+        # TEST ONLY
+        EventFileStream.get_instance().save_file("testFile", self.get_events())
 
     def add_event_button_action(self):
         adding = TodoItem.EventInputWindow(self, self.add_new_event, True)

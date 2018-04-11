@@ -79,7 +79,7 @@ class Event:
         return time_str
 
     def get_saving_string(self):
-        string = self.title + "\n " + self.content + "\n" + str(self.priority) + "\n" + \
+        string = self.title + "\n" + self.content + "\n" + str(self.priority) + "\n" + \
                  self.get_due_date() + "\n" + self.get_due_time() + "\n" + \
                  str(self.isDone) + "\n" + str(self.isLate)
         return string
