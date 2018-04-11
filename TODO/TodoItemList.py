@@ -33,7 +33,7 @@ class TodoItemList(tkinter.Frame):
         obj.grid_forget()
         self.itemList.remove(obj)
         self.update_content()
-        self.update_file("TEST")
+        self.update_file(obj.event.get_due_date())
 
     def get_events(self):
         events = []
@@ -46,14 +46,15 @@ class TodoItemList(tkinter.Frame):
             self.itemList.append(TodoItem.TodoItem(new_event, master=self.itemListFrame, delete_action=self.delete_item))
             self.itemList[len(self.itemList)-1].grid(column=0)
             self.update_content()
-            self.update_file("TEST")
+            self.update_file(new_event.get_due_date())
 
     def edit_item(self, edited_event):
-        self.update_file(edited_event)
+        self.update_file(edited_event.get_due_date())
 
-    def update_file(self, eventID):
+    def update_file(self, due_date):
         # TEST ONLY
-        EventFileStream.get_instance().save_file("testFile", self.get_events())
+        filename = due_date[:-3].replace("/", "_")
+        EventFileStream.get_instance().save_file(filename, self.get_events())
 
     def add_event_button_action(self):
         adding = TodoItem.EventInputWindow(self, self.add_new_event, True)

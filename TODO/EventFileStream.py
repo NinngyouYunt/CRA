@@ -8,9 +8,13 @@ class EventFileStream:
 
     def __init__(self):
         self.storageRoot = os.path.dirname(__file__) + "/storage"
-        # read all files
-        #for filename in os.listdir(self.storageRoot):
-        #    self.events = self.events + self.read_file(os.path.join(self.storageRoot, filename))
+
+    def read_all_file(self):
+        events = []
+        for filename in os.listdir(self.storageRoot):
+            if filename.find("_") != -1:
+                events = events + self.read_file(filename)
+        return events
 
     def read_file(self, filename):
         path = os.path.join(self.storageRoot, filename)

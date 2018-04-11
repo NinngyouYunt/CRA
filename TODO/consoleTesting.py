@@ -43,3 +43,7 @@ input="11:11:11"
 
 due_date = ["1", "555", "3"]
 print(list(map(lambda x: int(x), due_date)))
+print("999/03/01"[:-3].replace("/","-"))
+print([1,2,3]+[3,4,5])
+if "-".find("-") != -1:
+    print("contain")

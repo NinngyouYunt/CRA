@@ -92,4 +92,3 @@ class Event:
         return self.title + "\n " + self.content + "\n" + self.priority + "\n" + \
                self.get_due_date() + "\n" + self.get_due_time() + "\n" + \
                str(self.isDone) + "\n" + str(self.isLate)
-

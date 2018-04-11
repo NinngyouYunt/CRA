@@ -100,7 +100,7 @@ class TodoItem(tk.Frame):
             self.event.update(event)
             print("Editing Event")
             self.update_content()
-            self.parentEditCallback("TEST")
+            self.parentEditCallback(self.event.get_due_date())
 
     def __eq__(self, other):
         return self.event == other.event
