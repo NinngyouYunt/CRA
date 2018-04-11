@@ -23,9 +23,11 @@ class EventFileStream:
             # Priority
             params[2] = int(params[2])
             # Date
-            params[3] = list(map(lambda x: int(x), params[3].split("/")))
+            if params[3] != "":
+                params[3] = list(map(lambda x: int(x), params[3].split("/")))
             # Time
-            params[4] = list(map(lambda x: int(x), params[4].split(":")))
+            if params[4] != "":
+                params[4] = list(map(lambda x: int(x), params[4].split(":")))
             # isDone
             params[5] = params[5] == "True"
             # isLate
@@ -34,6 +36,17 @@ class EventFileStream:
             # TEST_USE
             print(params)
         return events
+
+    def save_file(self, filename, events):
+        path = self.get_path(filename+".temp")
+        file = open(path, "w")
+        for event in events:
+            file.write(event.get_saving_string()+"\nEND\n")
+        file.close()
+        os.replace(self.get_path(filename+".temp"), self.get_path(filename))
+
+    def get_path(self, filename):
+        return os.path.join(self.storageRoot, filename)
 
     @staticmethod
     def get_instance():

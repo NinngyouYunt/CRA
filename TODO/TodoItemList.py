@@ -1,6 +1,7 @@
 import TODO.TodoItem as TodoItem
 import tkinter
 from tkinter.font import Font
+from TODO.EventFileStream import EventFileStream
 
 
 class TodoItemList(tkinter.Frame):
@@ -32,11 +33,21 @@ class TodoItemList(tkinter.Frame):
         self.itemList.remove(obj)
         self.update_content()
 
+    def get_events(self):
+        events = []
+        for item in self.itemList:
+            events.append(item.event)
+        return events
+
     def add_new_event(self, new_event):
         if new_event is not None:
             self.itemList.append(TodoItem.TodoItem(new_event, master=self.itemListFrame, delete_action=self.delete_item))
             self.itemList[len(self.itemList)-1].grid(column=0)
             self.update_content()
+            # TEST ONLY
+            EventFileStream.get_instance().save_file("testFile", self.get_events())
+
+
 
     def add_event_button_action(self):
         adding = TodoItem.EventInputWindow(self, self.add_new_event, True)
