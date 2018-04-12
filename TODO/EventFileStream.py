@@ -41,8 +41,13 @@ class EventFileStream:
         return events
 
     def save_file(self, filename, events):
+        if filename == "":
+            filename = "no_date"
         if len(events) == 0:
-            os.remove(self.get_path(filename))
+            try:
+                os.remove(self.get_path(filename))
+            except FileNotFoundError:
+                print("cannot find it but it is fine")
         else:
             path = self.get_path(filename+".temp")
             file = open(path, "w")

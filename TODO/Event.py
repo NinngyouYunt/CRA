@@ -91,3 +91,7 @@ class Event:
         return self.title + "\n " + self.content + "\n" + self.priority + "\n" + \
                self.get_due_date() + "\n" + self.get_due_time() + "\n" + \
                str(self.isDone) + "\n" + str(self.isLate)
+
+    # compare part of date string:"yyyy/mm"
+    def compare_date(self, date):
+        return self.get_due_date()[:-3] == date[:-3]

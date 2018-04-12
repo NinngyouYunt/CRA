@@ -35,7 +35,7 @@ class TodoItemList(tkinter.Frame):
         self.update_content()
         self.update_file(obj.event.get_due_date())
 
-    def get_events(self):
+    def get_all_events(self):
         events = []
         for item in self.itemList:
             events.append(item.event)
@@ -52,8 +52,12 @@ class TodoItemList(tkinter.Frame):
         self.update_file(edited_event.get_due_date())
 
     def update_file(self, due_date):
+        events = []
+        for item in self.itemList:
+            if item.event.compare_date(due_date):
+                events.append(item.event)
         filename = due_date[:-3].replace("/", "_")
-        EventFileStream.get_instance().save_file(filename, self.get_events())
+        EventFileStream.get_instance().save_file(filename, events)
 
     def add_event_button_action(self):
         adding = TodoItem.EventInputWindow(self, self.add_new_event, True)
