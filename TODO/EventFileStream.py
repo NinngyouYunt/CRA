@@ -41,12 +41,15 @@ class EventFileStream:
         return events
 
     def save_file(self, filename, events):
-        path = self.get_path(filename+".temp")
-        file = open(path, "w")
-        for event in events:
-            file.write(event.get_saving_string()+"\nEND\n")
-        file.close()
-        os.replace(self.get_path(filename+".temp"), self.get_path(filename))
+        if len(events) == 0:
+            os.remove(self.get_path(filename))
+        else:
+            path = self.get_path(filename+".temp")
+            file = open(path, "w")
+            for event in events:
+                file.write(event.get_saving_string()+"\nEND\n")
+            file.close()
+            os.replace(self.get_path(filename+".temp"), self.get_path(filename))
 
     def get_path(self, filename):
         return os.path.join(self.storageRoot, filename)
