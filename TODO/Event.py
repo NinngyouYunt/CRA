@@ -88,10 +88,10 @@ class Event:
         return self.title == other.title
 
     def __str__(self):
-        return self.title + "\n " + self.content + "\n" + self.priority + "\n" + \
+        return self.title + "\n " + self.content + "\n" + str(self.priority) + "\n" + \
                self.get_due_date() + "\n" + self.get_due_time() + "\n" + \
                str(self.isDone) + "\n" + str(self.isLate)
 
-    # compare part of date string:"yyyy/mm"
-    def compare_date(self, date):
-        return self.get_due_date()[:-3] == date[:-3]
+    def compare_month(self, due_date):
+        return due_date[:-3] == self.get_due_date()[:-3]
+

@@ -3,9 +3,9 @@ from Calendar.Clock import *
 
 
 class IndependentMonthFrame(MonthFrame.MonthFrame):
-    def __init__(self, master=None):
+    def __init__(self, check_event_callback, master=None):
         # Pass a different font size for showing purpose
-        super().__init__(month=Clock.get_instance().currentMonth, master=master, font_size=17)
+        super().__init__(Clock.get_instance().currentMonth, check_event_callback, master=master, font_size=17)
 
     # Different title
     def place_content(self):

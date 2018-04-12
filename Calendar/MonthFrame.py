@@ -8,7 +8,7 @@ class MonthFrame(tk.Frame):
     # each month is a 6 by 7 matrix (without week and header)
     # each year could be in 4 by 3 or 3 by 4
 
-    def __init__(self, month, master=None, font_size=15):
+    def __init__(self, month, check_event_callback, master=None, font_size=15):
         super().__init__(master=master, bg="white")
         self.showingMonth = month
         self.showingYear = Clock.get_instance().currentYear
@@ -19,6 +19,7 @@ class MonthFrame(tk.Frame):
         self.monthTitle = tk.Label(master=self)
         self.weekTitle = []
         self.dayCallback = None
+        self.hasEventCallback = check_event_callback
         self.place_content()
 
     # Add widgets into the frame, call in __init__()
@@ -64,6 +65,10 @@ class MonthFrame(tk.Frame):
                     if current_month_calendar[week][day][0] != 0:
                         self.days[week][day].config(text=current_month_calendar[week][day][0])
                         self.days[week][day].config(font=Font(weight="bold", size=self.fontSize-3), fg="black")
+                        # Highlight days with events
+                        if self.hasEventCallback(self.showingYear, self.showingMonth,
+                                                 int(self.days[week][day]["text"])):
+                            self.days[week][day].config(fg="red")
                         # Highlight today
                         if self.showingYear == Clock.get_instance().currentYear and \
                                 self.showingMonth == Clock.get_instance().currentMonth and \

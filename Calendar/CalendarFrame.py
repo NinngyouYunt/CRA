@@ -5,11 +5,11 @@ from tkinter.font import Font
 
 
 class CalendarFrame(tkinter.Frame):
-    def __init__(self, master=None):
+    def __init__(self, show_certain_date_callback, check_event_callback, master=None):
         super().__init__(master, bg="white")
         # Creating all the frames
-        self.yearCalendar = YearFrame.YearFrame(master=self)
-        self.monthCalendar = IndependentMonthFrame.IndependentMonthFrame(master=self)
+        self.yearCalendar = YearFrame.YearFrame(check_event_callback, master=self)
+        self.monthCalendar = IndependentMonthFrame.IndependentMonthFrame(check_event_callback, master=self)
         self.binding_events()
         self.calendarType = "year"
         # Creating all the buttons
@@ -21,6 +21,7 @@ class CalendarFrame(tkinter.Frame):
                                             command=self.switch_mode, master=self)
         self.today_button = tkinter.Button(text="Today", bg="white", font=Font(weight="bold", size=20),
                                            command=self.jump_to_today, master=self)
+        self.click_day_callback = show_certain_date_callback
         # Displaying content
         self.show_calendar()
         self.place_content()
@@ -88,9 +89,16 @@ class CalendarFrame(tkinter.Frame):
     def click_day(self, day, month, year):
         show = str(year)+"/"+str(month)+"/"+str(day)
         print(show, "was clicked")
+        self.click_day_callback(year, month, day)
 
     # Pass all the event callback that need to be bind into each frame
     def binding_events(self):
         self.yearCalendar.bind_to_month_title(self.click_month_title)
         self.yearCalendar.bind_to_days(self.click_day)
         self.monthCalendar.bind_action_days(self.click_day)
+
+    def event_update_call(self):
+        if self.calendarType == "year":
+            self.yearCalendar.update_year(self.yearCalendar.showingYear)
+        else:
+            self.monthCalendar.update_month(self.monthCalendar.showingMonth, self.monthCalendar.showingYear)
