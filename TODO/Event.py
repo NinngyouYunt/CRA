@@ -87,7 +87,6 @@ class Event:
     def __eq__(self, other):
         return self.title == other.title
 
-    # Test USE only
     def __str__(self):
         return self.title + "\n " + self.content + "\n" + self.priority + "\n" + \
                self.get_due_date() + "\n" + self.get_due_time() + "\n" + \

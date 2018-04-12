@@ -75,7 +75,7 @@ class TodoItem(tk.Frame):
     def check_button_action(self):
         self.event.change_done_status()
         self.check_item()
-        self.parentEditCallback("TEST")
+        self.parentEditCallback(self.event)
 
     def grid(self,**kwargs):
         super().grid(ipady=3, ipadx=0, **kwargs)

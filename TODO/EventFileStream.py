@@ -37,7 +37,6 @@ class EventFileStream:
             # isLate
             params[6] = params[6] == "True"
             events.append(Event(*params))
-            # TEST_USE
             print(params)
         return events
 

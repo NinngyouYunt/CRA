@@ -52,7 +52,6 @@ class TodoItemList(tkinter.Frame):
         self.update_file(edited_event.get_due_date())
 
     def update_file(self, due_date):
-        # TEST ONLY
         filename = due_date[:-3].replace("/", "_")
         EventFileStream.get_instance().save_file(filename, self.get_events())
 
