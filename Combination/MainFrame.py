@@ -19,6 +19,7 @@ class CRA(tkinter.Tk):
     def place_content(self):
         self.calendar.grid(row=0, column=0)
         self.todoList.grid(row=0, column=1)
+        self.config(bg="white")
 
     def update_calendar(self):
         self.calendar.event_update_call()

@@ -23,9 +23,10 @@ class TodoItemList(tkinter.Frame):
         self.update()
 
     def place_content(self):
-        self.showDateLabel.config(font=Font(size=15))
-        self.addEventButton.config(width=10, height=1)
-        self.addEventButton.config(font=Font(size=15))
+        self.showDateLabel.config(font=Font(size=15), bg="white")
+        self.addEventButton.config(width=10, height=1, bg="white")
+        self.addEventButton.config(font=Font(size=15), bg="white")
+        self.showAllButton.config(bg="white")
 
         self.showDateLabel.grid(row=0, column=0)
         for index in range(len(self.itemList)):
@@ -33,6 +34,7 @@ class TodoItemList(tkinter.Frame):
         self.itemListFrame.grid(row=1, column=0)
         self.addEventButton.grid(row=2, column=0)
         self.showAllButton.grid(row=3, column=0)
+        self.config(bg="white")
         self.update_content()
 
     def delete_item(self, obj):

@@ -21,16 +21,16 @@ class TodoItem(tk.Frame):
         # https://www.flaticon.com/free-icon/rubbish-bin_63260#term=delete&page=1&position=5
         self.deleteButtonIcon = tk.PhotoImage(file=os.path.join(picture_root, "delete-button-icon.png"))
 
-        self.titleLabel = tk.Label(master=self)
-        self.dueDateLabel = tk.Label(master=self)
-        self.priorityLabel = tk.Label(master=self)
-        self.deleteButton = tk.Button(master=self, image=self.deleteButtonIcon)
-        self.editButton = tk.Button(master=self, image=self.editButtonIcon)
+        self.titleLabel = tk.Label(master=self, bg="white")
+        self.dueDateLabel = tk.Label(master=self, bg="white")
+        self.priorityLabel = tk.Label(master=self, bg="white")
+        self.deleteButton = tk.Button(master=self, image=self.deleteButtonIcon, bg="white")
+        self.editButton = tk.Button(master=self, image=self.editButtonIcon, bg="white")
         self.checkButtonStatus = tk.IntVar()
-        self.checkButton = tk.Checkbutton(master=self, variable=self.checkButtonStatus)
+        self.checkButton = tk.Checkbutton(master=self, variable=self.checkButtonStatus, bg="white")
         self.bind_delete_action(delete_action)
         self.parentEditCallback = edit_action
-
+        self.config(bg="white")
         self.place_content()
 
     def update_content(self):
@@ -123,19 +123,19 @@ class EventInputWindow(tk.Toplevel):
         self.dueDateInput = tk.Entry(self)
         self.dueTimeInput = tk.Entry(self)
         if self.mode:
-            self.saveButton = tk.Button(self, text="Add", command=self.save)
+            self.saveButton = tk.Button(self, text="Add", command=self.save, bg="white")
         else:
-            self.saveButton = tk.Button(self, text="Save", command=self.save)
-        self.cancelButton = tk.Button(self, text="Cancel", command=self.cancel)
+            self.saveButton = tk.Button(self, text="Save", command=self.save, bg="white")
+        self.cancelButton = tk.Button(self, text="Cancel", command=self.cancel, bg="white")
 
         if self.mode:
-            self.titleLabel = tk.Label(self, text="Title(*):")
+            self.titleLabel = tk.Label(self, text="Title(*):", bg="white")
         else:
-            self.titleLabel = tk.Label(self, text="Title:")
-        self.contentLabel = tk.Label(self, text="Content:")
-        self.priorityLabel = tk.Label(self, text="Priority:")
-        self.dueDateLabel = tk.Label(self, text="Date(yyyy-mm-dd):")
-        self.dueTimeLabel = tk.Label(self, text="Time(hh:mm):")
+            self.titleLabel = tk.Label(self, text="Title:", bg="white")
+        self.contentLabel = tk.Label(self, text="Content:", bg="white")
+        self.priorityLabel = tk.Label(self, text="Priority:", bg="white")
+        self.dueDateLabel = tk.Label(self, text="Date(yyyy-mm-dd):", bg="white")
+        self.dueTimeLabel = tk.Label(self, text="Time(hh:mm):", bg="white")
 
         self.protocol("WM_DELETE_WINDOW", self.cancel)
         self.place_content()
@@ -157,6 +157,7 @@ class EventInputWindow(tk.Toplevel):
 
         self.saveButton.grid(row=5, columnspan=2)
         self.cancelButton.grid(row=6, columnspan=2)
+        self.config(bg="white")
 
     def process_input(self):
         params = []
