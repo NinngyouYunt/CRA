@@ -9,13 +9,15 @@ class EventFileStream:
     def __init__(self):
         self.storageRoot = os.path.dirname(__file__) + "/storage"
 
+    # read all files under a directory
     def read_all_file(self):
         events = []
         for filename in os.listdir(self.storageRoot):
-            if filename.find("_") != -1:
+            if filename == "data":
                 events = events + self.read_file(filename)
         return events
 
+    # read a single file of the Todoitem format and return a list of Event
     def read_file(self, filename):
         path = os.path.join(self.storageRoot, filename)
         total_line = len(Event.contentTuple) + 1
@@ -41,8 +43,6 @@ class EventFileStream:
         return events
 
     def save_file(self, filename, events):
-        if filename == "":
-            filename = "no_date"
         if len(events) == 0:
             try:
                 os.remove(self.get_path(filename))

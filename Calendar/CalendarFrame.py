@@ -11,7 +11,7 @@ class CalendarFrame(tkinter.Frame):
         self.yearCalendar = YearFrame.YearFrame(check_event_callback, master=self)
         self.monthCalendar = IndependentMonthFrame.IndependentMonthFrame(check_event_callback, master=self)
         self.binding_events()
-        self.calendarType = "year"
+        self.calendarType = "month"
         # Creating all the buttons
         self.next_button = tkinter.Button(text="->", bg="white", font=Font(weight="bold", size=20),
                                           command=self.next_function, master=self)

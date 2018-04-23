@@ -85,7 +85,6 @@ class TodoItem(tk.Frame):
 
     def edit_button_action(self):
         if self.editingWindow is None:
-            self.tempDate = self.event.get_due_date()
             self.editingWindow = EventInputWindow(self, self.edit_callback, False)
             self.editingWindow.focus_force()
             print("Open Edit Window")
@@ -101,7 +100,7 @@ class TodoItem(tk.Frame):
             self.event.update(event)
             print("Editing Event")
             self.update_content()
-            self.parentEditCallback(self.event, self.tempDate)
+            self.parentEditCallback(self.event)
 
     def __eq__(self, other):
         return self.event == other.event
