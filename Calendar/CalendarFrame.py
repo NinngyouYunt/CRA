@@ -87,8 +87,6 @@ class CalendarFrame(tkinter.Frame):
 
     # action listener for clicking on each of the day label in a calendar
     def click_day(self, day, month, year):
-        show = str(year)+"/"+str(month)+"/"+str(day)
-        print(show, "was clicked")
         self.click_day_callback(year, month, day)
 
     # Pass all the event callback that need to be bind into each frame

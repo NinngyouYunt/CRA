@@ -61,6 +61,7 @@ class MonthFrame(tk.Frame):
         starting = 0
         for week in range(6):
             for day in range(7):
+                self.days[week][day].config(text="")
                 if len(current_month_calendar) > week:
                     if current_month_calendar[week][day][0] != 0:
                         self.days[week][day].config(text=current_month_calendar[week][day][0])
@@ -74,25 +75,6 @@ class MonthFrame(tk.Frame):
                                 self.showingMonth == Clock.get_instance().currentMonth and \
                                 self.days[week][day]["text"] == Clock.get_instance().currentDay:
                             self.days[week][day].config(fg="blue")
-                    elif current_month_calendar[week][day][0] == 0:
-                        self.days[week][day].config(font=Font(weight="normal", size=self.fontSize-3))
-                        # Check if the source is MonthFrame
-                        # MonthFrame is used in YearFrame, and only fill out other dates when using its subclass
-                        if type(self) is not MonthFrame:
-                            if week < 1:
-                                self.days[week][day].config(text=prev_month[-1][day][0])
-                            else:
-                                self.days[week][day].config(text=next_month[starting][day][0])
-                                if day == 6:
-                                    starting += 1
-                        else:
-                            self.days[week][day].config(text="")
-                else:
-                    self.days[week][day].config(font=Font(weight="normal", size=self.fontSize))
-                    if type(self) is not MonthFrame:
-                        self.days[week][day].config(text=next_month[starting][day][0])
-                    else:
-                        self.days[week][day].config(text="")
         self.update()
 
     # Change the displayed months and refresh the contents

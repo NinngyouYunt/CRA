@@ -21,26 +21,27 @@ class IndependentMonthFrame(MonthFrame.MonthFrame):
     def update_bind_action_days(self):
         for weekNum in range(len(self.days)):
             for day in self.days[weekNum]:
-                # Previous Month
-                if weekNum < 2 and int(day.cget("text")) > 14:
-                    # If it is January
-                    if self.showingMonth == 1:
-                        day.bind("<Button-1>", lambda event, d=day.cget("text"), m=12,
-                                 y=self.showingYear-1: self.dayCallback(d, m, y))
+                if day.cget("text") != "":
+                    # Previous Month
+                    if weekNum < 2 and int(day.cget("text")) > 14:
+                        # If it is January
+                        if self.showingMonth == 1:
+                            day.bind("<Button-1>", lambda event, d=day.cget("text"), m=12,
+                                     y=self.showingYear-1: self.dayCallback(d, m, y))
+                        else:
+                            day.bind("<Button-1>", lambda event, d=day.cget("text"), m=self.showingMonth-1,
+                                     y=self.showingYear: self.dayCallback(d, m, y))
+                    # Next month
+                    elif weekNum > 3 and int(day.cget("text")) < 21:
+                        # If it is December
+                        if self.showingMonth == 12:
+                            day.bind("<Button-1>", lambda event, d=day.cget("text"), m=1,
+                                     y=self.showingYear+1: self.dayCallback(d, m, y))
+                        else:
+                            day.bind("<Button-1>", lambda event, d=day.cget("text"), m=self.showingMonth+1,
+                                     y=self.showingYear: self.dayCallback(d, m, y))
+                    # Current month
                     else:
-                        day.bind("<Button-1>", lambda event, d=day.cget("text"), m=self.showingMonth-1,
+                        day.bind("<Button-1>", lambda event, d=day.cget("text"), m=self.showingMonth,
                                  y=self.showingYear: self.dayCallback(d, m, y))
-                # Next month
-                elif weekNum > 3 and int(day.cget("text")) < 21:
-                    # If it is December
-                    if self.showingMonth == 12:
-                        day.bind("<Button-1>", lambda event, d=day.cget("text"), m=1,
-                                 y=self.showingYear+1: self.dayCallback(d, m, y))
-                    else:
-                        day.bind("<Button-1>", lambda event, d=day.cget("text"), m=self.showingMonth+1,
-                                 y=self.showingYear: self.dayCallback(d, m, y))
-                # Current month
-                else:
-                    day.bind("<Button-1>", lambda event, d=day.cget("text"), m=self.showingMonth,
-                             y=self.showingYear: self.dayCallback(d, m, y))
 
